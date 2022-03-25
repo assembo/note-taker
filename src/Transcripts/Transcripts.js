@@ -28,17 +28,18 @@ class Transcripts extends React.Component {
   /**
    * function to start voice transcription
    */
-  startButton = () => {
-    if (this.state.recording) {
+  startButton = async () => {
+    if (this.state.recording === true) {
       this.setState({
         recording: false
       });
       this.recognition.stop();
       return;
     }
-    this.setState({
+    await this.setState({
       finalTranscript: "",
-      ignoreOnend: false
+      ignoreOnend: false,
+      startToRecord: true,
     });
     this.recognition.lang = "en-US";
     this.recognition.start();
@@ -56,6 +57,7 @@ class Transcripts extends React.Component {
       this.recognition.onstart = () => {
         this.setState({
           recording: true,
+          startToRecord: false,
         })
       };
   
@@ -135,10 +137,12 @@ class Transcripts extends React.Component {
             return (
               <Box display={"flex"} marginBottom={3}>
                 <Box flex={1}>
+                  <Button onClick={()=>{this.props.addNotes(message.text)}}>
                   <Typography style={{ inlineSize: "150px",
                     overflow: "hidden",
                     textAlign: "center"
                     }} >{message.text}</Typography>
+                  </Button>
                 </Box>
               </Box>
             )
@@ -159,7 +163,7 @@ class Transcripts extends React.Component {
             this.startButton();
           }}
         >
-          Start Recording
+          {this.state.startToRecord ? "Loading..." : (this.state.recording ? "Recording..." : "Start Recording")}
         </Button>
         </Box>
       </div>
