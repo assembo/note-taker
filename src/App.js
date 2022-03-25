@@ -1,14 +1,13 @@
 import logo from "./assets/images/assembo-icon-small.png";
 import './App.css';
+import Home from "./Main/Home";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <img src={logo} className="App-logo" alt="logo" style={ { margin: "10px" } }/>
+        <Home />
       </header>
     </div>
   );
