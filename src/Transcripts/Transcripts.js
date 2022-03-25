@@ -99,10 +99,8 @@ class Transcripts extends React.Component {
               interimBox: null
             });
             const text = event.results[i][0].transcript;
-            const now = new Date();
             console.log(text);
             const newTranscript = [...this.state.transcripts, { text }];
-            console.log(newTranscript);
             this.setState({ transcripts: newTranscript });
   
           } else {
@@ -137,7 +135,10 @@ class Transcripts extends React.Component {
             return (
               <Box display={"flex"} marginBottom={3}>
                 <Box flex={1}>
-                  <Typography>{message.text}</Typography>
+                  <Typography style={{ inlineSize: "150px",
+                    overflow: "hidden",
+                    textAlign: "center"
+                    }} >{message.text}</Typography>
                 </Box>
               </Box>
             )
