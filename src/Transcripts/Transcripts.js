@@ -17,8 +17,9 @@ class Transcripts extends React.Component {
       interimBox: null,
       finalTranscript: null,
       ignoreOnend: null,
-      voiceRecognitionAvailable: false
+      voiceRecognitionAvailable: false,
     };
+    window.transcript = this;
   }
 
   componentDidMount() {
@@ -76,7 +77,6 @@ class Transcripts extends React.Component {
       };
   
       this.recognition.onend = () => {
-        this.setState({recording: false});
         if (this.state.ignoreOnend) {
           return;
         }
@@ -153,13 +153,11 @@ class Transcripts extends React.Component {
             borderRadius: 45,
             fontWeight: "bold",
             boxShadow: "none",
-            height:"50px",
+            width: "64px", height: "64px",
             background: this.state.recording ? ASSEMBO_COLORS.primary : ASSEMBO_COLORS.OFF
           }}
-          startIcon={this.state.startToRecord ? <MicIcon style={{margin:"0px"}}/> :this.state.recording ? <MicIcon/> : <MicOffIcon style={{color:"#ffffff"}}/> }
-          onClick={()=>{
-            this.startButton();
-          }}
+          startIcon={this.state.startToRecord ? <MicIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px"}}/> :this.state.recording ? <MicIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px"}}/> : <MicOffIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px", color:"#ffffff"}}/> }
+          onClick={this.toggleRecording}
         >
         </Button>
       </div>

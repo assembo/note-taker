@@ -7,7 +7,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
-    window.mc = this;
+    this.state = {};
   }
 
   render() {
