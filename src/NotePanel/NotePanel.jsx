@@ -7,9 +7,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
-    window.mc = this;
+    this.state = {};
   }
 
   render() {
@@ -38,8 +36,6 @@ class NotePanel extends React.Component {
           }
         }}
         variant="outlined"
-          hintText="Message Field"
-          floatingLabelText="Notes"
           value={this.props.note}
           multiline
           rows={19}
