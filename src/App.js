@@ -1,14 +1,15 @@
-import logo from "./assets/images/assembo-icon-small.png";
+import { margin } from '@mui/system';
 import './App.css';
 import Home from "./Main/Home";
+import NavBar from "./Main/NavBar";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" style={ { margin: "10px" } }/>
-        <Home />
-      </header>
+    <div 
+      className="App"
+    >
+        <NavBar></NavBar>
+        <Home></Home>
     </div>
   );
 }

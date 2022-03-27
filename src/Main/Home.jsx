@@ -1,39 +1,56 @@
 import React from "react";
 import { Box, Button } from '@mui/material';
 import Transcript from "../Transcripts/Transcripts";
+import NotePanel from "../Transcripts/NotePanel";
 import { ASSEMBO_COLORS } from "../constants";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      note: "Add notes..."
     };
     window.mc = this;
   }
 
+  handleTextInputChange = event => {
+    this.setState({
+      note: event.target.value, 
+      copied: false,
+    })
+  };
   render() {
     return (
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
-        <Box sx={{ padding: "10px 20px" }}>
-          <Button
-            variant="contained"
-            style={{
-              borderRadius: 10,
-              fontWeight: "bold",
-              padding: 10,
-              marginBottom: 20,
-              background: ASSEMBO_COLORS.primary
-            }}
-            fullWidth
+      <div>
+        <div         
+          style={{
+            marginTop: "60px" /* excluding the height of the header */
+          }}
+          className="mainbox"
           >
-            Share
-          </Button>
-        </Box>
-          <Transcript />
+          <div type="note" id="note">
+            <NotePanel
+              note={this.state.note}
+              setNotes={(e)=>{this.handleTextInputChange(e)}} 
+              addNotes={(text)=>{
+                this.setState({
+                  note: `${this.state.note}\n${text}`
+                })
+              }}
+            ></NotePanel>
+          </div>
+
+          <div type="transcript" id="transcript">
+            <Transcript
+            addNotes={(text)=>{
+              this.setState({
+                note: `${this.state.note}\n${text}`,
+                copied: false,
+              })
+            }}> 
+            </Transcript>
+          </div>
+        </div>
       </div>
     );
   }
