@@ -13,8 +13,7 @@ export default function NavBar() {
         style={ { boxShadow: "none", height:"30px"}}
         >
         <Toolbar>
-          <IconButton
-          >
+          <IconButton>
             <img src={logo} className="App-logo" alt="logo" style={ { height:"50px",margin: "1px" } }/>
           </IconButton>
         </Toolbar>

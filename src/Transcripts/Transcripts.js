@@ -2,7 +2,8 @@ import React from "react";
 import { Box, Button, Typography } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 
-import { ASSEMBO_COLORS } from "../constants";
+import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
+import { preprocessText } from "./helpers";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -19,7 +20,6 @@ class Transcripts extends React.Component {
       ignoreOnend: null,
       voiceRecognitionAvailable: false
     };
-    window.transcripts = this;
   }
 
   componentDidMount() {
@@ -29,7 +29,7 @@ class Transcripts extends React.Component {
   /**
    * function to start voice transcription
   */
-  startButton = async () => {
+  toggleRecording = async () => {
     if (this.state.recording === true) {
       this.setState({
         recording: false
@@ -46,7 +46,7 @@ class Transcripts extends React.Component {
     this.recognition.start();
   }
   
-   setupWebkitSpeechRecognition = () => {
+  setupWebkitSpeechRecognition = () => {
     if ("webkitSpeechRecognition" in window) {
       this.recognition = new window.webkitSpeechRecognition();
       this.recognition.continuous = true;
@@ -101,10 +101,8 @@ class Transcripts extends React.Component {
               finalTranscript: this.state.finalTranscript + event.results[i][0].transcript,
               interimBox: null
             });
-            const text = event.results[i][0].transcript;
-            const newTranscript = [ { text }, ...this.state.transcripts];
-            this.setState({ transcripts: newTranscript });
-  
+            const rawText = event.results[i][0].transcript;
+            this.processText(rawText);
           } else {
             this.setState({
               interim_transcript: this.state.interim_transcript + event.results[i][0].transcript,
@@ -113,6 +111,25 @@ class Transcripts extends React.Component {
           }
         }
       };
+    }
+  }
+
+  /**
+   * method to process rawText for clientend
+   * @param {string} rawText string from final transcript
+   */
+  processText = (rawText) => {
+    const nextStep = preprocessText(rawText);
+    switch (nextStep) {
+      case ASSEMBO_NOTE_TAKER_COMMANDS.WRITE_IT_DOWN:
+        const previousTranscript = this.state.transcripts[0];
+        this.props.addNotes(previousTranscript.text);
+        break;
+      case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
+        const newTranscript = [ { text: rawText }, ...this.state.transcripts];
+        this.setState({ transcripts: newTranscript });
+      default:
+        break;
     }
   }
 
@@ -165,9 +182,7 @@ class Transcripts extends React.Component {
             background: ASSEMBO_COLORS.primary
           }}
           startIcon={<MicIcon style={{color:"#FF7272"}}/>}
-          onClick={()=>{
-            this.startButton();
-          }}
+          onClick={this.toggleRecording}
         >
           {this.state.startToRecord ? "Loading..." : (this.state.recording ? "Recording..." : "Start Recording")}
         </Button>
