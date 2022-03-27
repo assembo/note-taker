@@ -1,11 +1,9 @@
 import React from "react";
 import { Box, Button, Typography } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
-
-import { ASSEMBO_COLORS } from "../constants";
-import { RoundedCorner } from "@mui/icons-material";
+import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
+import { preprocessText } from "./helpers";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -13,7 +11,7 @@ class Transcripts extends React.Component {
     this.state = {
       transcripts: [
         { text: "← Press the Mic Button" },
-        { text: "Then say something :D" },
+        { text: "Then say something :D" }
       ],
       recording: false,
       interimBox: null,
@@ -21,7 +19,6 @@ class Transcripts extends React.Component {
       ignoreOnend: null,
       voiceRecognitionAvailable: false
     };
-    window.transcripts = this;
   }
 
   componentDidMount() {
@@ -30,8 +27,8 @@ class Transcripts extends React.Component {
 
   /**
    * function to start voice transcription
-   */
-  startButton = async () => {
+  */
+  toggleRecording = async () => {
     if (this.state.recording === true) {
       this.setState({
         recording: false
@@ -48,7 +45,7 @@ class Transcripts extends React.Component {
     this.recognition.start();
   }
   
-   setupWebkitSpeechRecognition = () => {
+  setupWebkitSpeechRecognition = () => {
     if ("webkitSpeechRecognition" in window) {
       this.recognition = new window.webkitSpeechRecognition();
       this.recognition.continuous = true;
@@ -65,14 +62,14 @@ class Transcripts extends React.Component {
       };
   
       this.recognition.onerror = (event) => {
-        if (event.error == "no-speech") {
+        if (event.error === "no-speech") {
           this.setState({ignoreOnend: true});
         }
-        if (event.error == "audio-capture") {
+        if (event.error === "audio-capture") {
           this.setState({ignoreOnend: true});
           console.warn("audio capture error")
         }
-        if (event.error == "not-allowed") {
+        if (event.error === "not-allowed") {
           this.setState({ignoreOnend: true});
           console.error("recognition not allowed")
         }
@@ -103,11 +100,8 @@ class Transcripts extends React.Component {
               finalTranscript: this.state.finalTranscript + event.results[i][0].transcript,
               interimBox: null
             });
-            const text = event.results[i][0].transcript;
-            console.log(text);
-            const newTranscript = [...this.state.transcripts, { text }];
-            this.setState({ transcripts: newTranscript });
-  
+            const rawText = event.results[i][0].transcript;
+            this.processText(rawText);
           } else {
             this.setState({
               interim_transcript: this.state.interim_transcript + event.results[i][0].transcript,
@@ -119,7 +113,25 @@ class Transcripts extends React.Component {
     }
   }
 
-  
+  /**
+   * method to process rawText for clientend
+   * @param {string} rawText string from final transcript
+   */
+  processText = (rawText) => {
+    const nextStep = preprocessText(rawText);
+    switch (nextStep) {
+      case ASSEMBO_NOTE_TAKER_COMMANDS.WRITE_IT_DOWN:
+        const previousTranscript = this.state.transcripts[0];
+        this.props.addNotes(previousTranscript.text);
+        break;
+      case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
+        const newTranscript = [ { text: rawText }, ...this.state.transcripts];
+        this.setState({ transcripts: newTranscript });
+        break;
+      default:
+        break;
+    }
+  }
 
   render() {
     return (
@@ -149,7 +161,6 @@ class Transcripts extends React.Component {
             this.startButton();
           }}
         >
-          {/* {this.state.startToRecord ? "Loading..." : (this.state.recording ? "Recording..." : "Start")} */}
         </Button>
       </div>
 
@@ -158,7 +169,6 @@ class Transcripts extends React.Component {
           padding: "0px 10px"
         }}>
         <Box sx={{ padding: "10px 20px" }}>
-          {/* <h3 style={{ color: ASSEMBO_COLORS.dark }} >Transcripts</h3> */}
         </Box>
         <Box style={{
           padding: "10px 10px",
@@ -181,7 +191,6 @@ class Transcripts extends React.Component {
           })}
         </Box>
       </div>
-
       </div>
     );
   }
