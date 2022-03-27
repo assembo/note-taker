@@ -5,5 +5,3 @@ export const ASSEMBO_COLORS = {
     seconday: "#838383",
     blue: '#0080ff',
   };
-  
-  // #B6FFFF
