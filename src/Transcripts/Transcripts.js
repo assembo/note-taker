@@ -105,7 +105,7 @@ class Transcripts extends React.Component {
             });
             const text = event.results[i][0].transcript;
             console.log(text);
-            const newTranscript = [...this.state.transcripts, { text }];
+            const newTranscript = [ { text }, ...this.state.transcripts];
             this.setState({ transcripts: newTranscript });
   
           } else {

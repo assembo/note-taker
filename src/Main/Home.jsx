@@ -1,8 +1,6 @@
 import React from "react";
-import { Box, Button } from '@mui/material';
 import Transcript from "../Transcripts/Transcripts";
-import NotePanel from "../Transcripts/NotePanel";
-import { ASSEMBO_COLORS } from "../constants";
+import NotePanel from "../NotePanel/NotePanel";
 
 class Home extends React.Component {
   constructor(props) {
