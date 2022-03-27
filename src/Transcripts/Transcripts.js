@@ -1,18 +1,19 @@
 import React from "react";
 import { Box, Button, Typography } from '@mui/material';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
 
-import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
-import { preprocessText } from "./helpers";
+import { ASSEMBO_COLORS } from "../constants";
+import { RoundedCorner } from "@mui/icons-material";
 
 class Transcripts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       transcripts: [
-        { text: "hi" },
-        { text: "yumo" },
-        { text: "how's life" }
+        { text: "← Press the Mic Button" },
+        { text: "Then say something :D" },
       ],
       recording: false,
       interimBox: null,
@@ -20,6 +21,7 @@ class Transcripts extends React.Component {
       ignoreOnend: null,
       voiceRecognitionAvailable: false
     };
+    window.transcripts = this;
   }
 
   componentDidMount() {
@@ -28,8 +30,8 @@ class Transcripts extends React.Component {
 
   /**
    * function to start voice transcription
-  */
-  toggleRecording = async () => {
+   */
+  startButton = async () => {
     if (this.state.recording === true) {
       this.setState({
         recording: false
@@ -46,7 +48,7 @@ class Transcripts extends React.Component {
     this.recognition.start();
   }
   
-  setupWebkitSpeechRecognition = () => {
+   setupWebkitSpeechRecognition = () => {
     if ("webkitSpeechRecognition" in window) {
       this.recognition = new window.webkitSpeechRecognition();
       this.recognition.continuous = true;
@@ -63,14 +65,14 @@ class Transcripts extends React.Component {
       };
   
       this.recognition.onerror = (event) => {
-        if (event.error === "no-speech") {
+        if (event.error == "no-speech") {
           this.setState({ignoreOnend: true});
         }
-        if (event.error === "audio-capture") {
+        if (event.error == "audio-capture") {
           this.setState({ignoreOnend: true});
           console.warn("audio capture error")
         }
-        if (event.error === "not-allowed") {
+        if (event.error == "not-allowed") {
           this.setState({ignoreOnend: true});
           console.error("recognition not allowed")
         }
@@ -101,8 +103,11 @@ class Transcripts extends React.Component {
               finalTranscript: this.state.finalTranscript + event.results[i][0].transcript,
               interimBox: null
             });
-            const rawText = event.results[i][0].transcript;
-            this.processText(rawText);
+            const text = event.results[i][0].transcript;
+            console.log(text);
+            const newTranscript = [...this.state.transcripts, { text }];
+            this.setState({ transcripts: newTranscript });
+  
           } else {
             this.setState({
               interim_transcript: this.state.interim_transcript + event.results[i][0].transcript,
@@ -114,39 +119,50 @@ class Transcripts extends React.Component {
     }
   }
 
-  /**
-   * method to process rawText for clientend
-   * @param {string} rawText string from final transcript
-   */
-  processText = (rawText) => {
-    const nextStep = preprocessText(rawText);
-    switch (nextStep) {
-      case ASSEMBO_NOTE_TAKER_COMMANDS.WRITE_IT_DOWN:
-        const previousTranscript = this.state.transcripts[0];
-        this.props.addNotes(previousTranscript.text);
-        break;
-      case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
-        const newTranscript = [ { text: rawText }, ...this.state.transcripts];
-        this.setState({ transcripts: newTranscript });
-      default:
-        break;
-    }
-  }
+  
 
   render() {
     return (
       <div className="containershadow" 
         style={{
+          display: "flex",
           borderRadius: 25, 
           marginRight: "80px",
           height: "93%"
         }}>
+      <div
+        style={{
+          padding: "20px 10px"
+        }}
+      >
+        <Button
+          variant="contained"
+          style={{
+            borderRadius: 45,
+            fontWeight: "bold",
+            boxShadow: "none",
+            height:"50px",
+            background: this.state.recording ? ASSEMBO_COLORS.primary : ASSEMBO_COLORS.OFF
+          }}
+          startIcon={this.state.startToRecord ? <MicIcon style={{margin:"0px"}}/> :this.state.recording ? <MicIcon/> : <MicOffIcon style={{color:"#ffffff"}}/> }
+          onClick={()=>{
+            this.startButton();
+          }}
+        >
+          {/* {this.state.startToRecord ? "Loading..." : (this.state.recording ? "Recording..." : "Start")} */}
+        </Button>
+      </div>
+
+      <div 
+        style={{
+          padding: "0px 10px"
+        }}>
         <Box sx={{ padding: "10px 20px" }}>
-          <h3 style={{ color: ASSEMBO_COLORS.dark }} >Transcripts</h3>
+          {/* <h3 style={{ color: ASSEMBO_COLORS.dark }} >Transcripts</h3> */}
         </Box>
         <Box style={{
-          padding: "10px 20px",
-          height: "50vh",
+          padding: "10px 10px",
+          height: "70vh",
           overflowY: "scroll",
         }}>
           {this.state.transcripts.map((message, index) => {
@@ -154,9 +170,9 @@ class Transcripts extends React.Component {
               <Box display={"flex"} marginBottom={3}>
                 <Box flex={1}>
                   <Button onClick={()=>{this.props.addNotes(message.text)}}>
-                  <Typography style={{ inlineSize: "150px",
+                  <Typography style={{ inlineSize: "350px",
                     overflow: "hidden",
-                    textAlign: "center"
+                    textAlign: "left"
                     }} >{message.text}</Typography>
                   </Button>
                 </Box>
@@ -164,29 +180,8 @@ class Transcripts extends React.Component {
             )
           })}
         </Box>
-        <Box 
-          sx={{ padding: "10px 20px" }}
-          style={{
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-          }}>
-        <Button
-          variant="contained"
-          style={{
-            borderRadius: 20,
-            fontWeight: "bold",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            boxShadow: "none",
-            padding: 10,
-            background: ASSEMBO_COLORS.primary
-          }}
-          startIcon={<MicIcon style={{color:"#FF7272"}}/>}
-          onClick={this.toggleRecording}
-        >
-          {this.state.startToRecord ? "Loading..." : (this.state.recording ? "Recording..." : "Start Recording")}
-        </Button>
-        </Box>
+      </div>
+
       </div>
     );
   }

@@ -4,6 +4,7 @@ export const ASSEMBO_COLORS = {
     darkSecondary: "#00202B",
     seconday: "#838383",
     blue: '#0080ff',
+    OFF:"#e3645b"
   };
 
 // commands for client end to recognize, see that assembo is written as assembo for web voice package to recognize
