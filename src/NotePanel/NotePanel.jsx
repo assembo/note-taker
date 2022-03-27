@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { ASSEMBO_COLORS } from "../constants";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 

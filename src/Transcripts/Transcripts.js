@@ -63,14 +63,14 @@ class Transcripts extends React.Component {
       };
   
       this.recognition.onerror = (event) => {
-        if (event.error == "no-speech") {
+        if (event.error === "no-speech") {
           this.setState({ignoreOnend: true});
         }
-        if (event.error == "audio-capture") {
+        if (event.error === "audio-capture") {
           this.setState({ignoreOnend: true});
           console.warn("audio capture error")
         }
-        if (event.error == "not-allowed") {
+        if (event.error === "not-allowed") {
           this.setState({ignoreOnend: true});
           console.error("recognition not allowed")
         }
