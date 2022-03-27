@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Typography } from '@mui/material';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
 
 import { ASSEMBO_COLORS } from "../constants";
 import { RoundedCorner } from "@mui/icons-material";
@@ -11,9 +12,8 @@ class Transcripts extends React.Component {
     super(props);
     this.state = {
       transcripts: [
-        { text: "hi" },
-        { text: "yumo" },
-        { text: "how's life" }
+        { text: "← Press the Mic Button" },
+        { text: "Then say something :D" },
       ],
       recording: false,
       interimBox: null,
@@ -125,16 +125,44 @@ class Transcripts extends React.Component {
     return (
       <div className="containershadow" 
         style={{
+          display: "flex",
           borderRadius: 25, 
           marginRight: "80px",
           height: "93%"
         }}>
+      <div
+        style={{
+          padding: "20px 10px"
+        }}
+      >
+        <Button
+          variant="contained"
+          style={{
+            borderRadius: 45,
+            fontWeight: "bold",
+            boxShadow: "none",
+            height:"50px",
+            background: this.state.recording ? ASSEMBO_COLORS.primary : ASSEMBO_COLORS.OFF
+          }}
+          startIcon={this.state.startToRecord ? <MicIcon style={{margin:"0px"}}/> :this.state.recording ? <MicIcon/> : <MicOffIcon style={{color:"#ffffff"}}/> }
+          onClick={()=>{
+            this.startButton();
+          }}
+        >
+          {/* {this.state.startToRecord ? "Loading..." : (this.state.recording ? "Recording..." : "Start")} */}
+        </Button>
+      </div>
+
+      <div 
+        style={{
+          padding: "0px 10px"
+        }}>
         <Box sx={{ padding: "10px 20px" }}>
-          <h3 style={{ color: ASSEMBO_COLORS.dark }} >Transcripts</h3>
+          {/* <h3 style={{ color: ASSEMBO_COLORS.dark }} >Transcripts</h3> */}
         </Box>
         <Box style={{
-          padding: "10px 20px",
-          height: "50vh",
+          padding: "10px 10px",
+          height: "70vh",
           overflowY: "scroll",
         }}>
           {this.state.transcripts.map((message, index) => {
@@ -142,9 +170,9 @@ class Transcripts extends React.Component {
               <Box display={"flex"} marginBottom={3}>
                 <Box flex={1}>
                   <Button onClick={()=>{this.props.addNotes(message.text)}}>
-                  <Typography style={{ inlineSize: "150px",
+                  <Typography style={{ inlineSize: "350px",
                     overflow: "hidden",
-                    textAlign: "center"
+                    textAlign: "left"
                     }} >{message.text}</Typography>
                   </Button>
                 </Box>
@@ -152,31 +180,8 @@ class Transcripts extends React.Component {
             )
           })}
         </Box>
-        <Box 
-          sx={{ padding: "10px 20px" }}
-          style={{
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-          }}>
-        <Button
-          variant="contained"
-          style={{
-            borderRadius: 20,
-            fontWeight: "bold",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            boxShadow: "none",
-            padding: 10,
-            background: ASSEMBO_COLORS.primary
-          }}
-          startIcon={<MicIcon style={{color:"#FF7272"}}/>}
-          onClick={()=>{
-            this.startButton();
-          }}
-        >
-          {this.state.startToRecord ? "Loading..." : (this.state.recording ? "Recording..." : "Start Recording")}
-        </Button>
-        </Box>
+      </div>
+
       </div>
     );
   }
