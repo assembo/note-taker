@@ -1,6 +1,8 @@
 import React from "react";
 import { Box, Button, TextField } from '@mui/material';
 import { ASSEMBO_COLORS } from "../constants";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+
 
 class NotePanel extends React.Component {
   constructor(props) {
@@ -12,22 +14,55 @@ class NotePanel extends React.Component {
 
   render() {
     return (
-      <div
+      <div 
+      className="containershadow"
         style={{
-          display: "flex",
+          padding: "5px 20px",
+          borderRadius: 25,
+          flexGrow: 1,
+          marginLeft: "80px"
         }}
       >
-        <Box sx={{ padding: "10px 20px" }}>
         <TextField
-          style={{textAlign: 'left', backgroundColor: 'white'}}
+          style={{textAlign: 'left',
+          width:"100%",
+        }}
+        sx={{
+
+          width: { sm: 0, md: 0 },
+      
+          "& .MuiOutlinedInput-root:hover": {
+            "& > fieldset": {
+              borderColor: "white"
+            }
+          }
+        }}
+        variant="outlined"
           hintText="Message Field"
           floatingLabelText="Notes"
           value={this.props.note}
           multiline
-          rows={20}
+          rows={19}
           onChange={this.props.setNotes}
         />
-        </Box>
+        <CopyToClipboard text={this.state.note}
+            onCopy={() => this.setState({copied: true})}>
+            <Button
+              variant="contained"
+              style={{
+                borderRadius: 20,
+                fontWeight: "bold",
+                padding: 10,
+                marginBottom: 20,
+                marginTop:"10px",
+                background: ASSEMBO_COLORS.primary,
+                boxShadow:"none",
+              }}
+              fullWidth
+            >
+              {this.state.copied ? "Copied!" : "Copy"}
+            </Button>
+        </CopyToClipboard>
       </div>
     );
   }

@@ -1,7 +1,10 @@
 import React from "react";
 import { Box, Button, Typography } from '@mui/material';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import MicIcon from '@mui/icons-material/Mic';
+
 import { ASSEMBO_COLORS } from "../constants";
+import { RoundedCorner } from "@mui/icons-material";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -116,21 +119,22 @@ class Transcripts extends React.Component {
     }
   }
 
+  
+
   render() {
     return (
-      <div
+      <div className="containershadow" 
         style={{
-          display: "flex",
-          flexDirection: "column",
-          backgroundColor: "rgb(229, 229, 229)"
-        }}
-      >
+          borderRadius: 25, 
+          marginRight: "80px",
+          height: "93%"
+        }}>
         <Box sx={{ padding: "10px 20px" }}>
           <h3 style={{ color: ASSEMBO_COLORS.dark }} >Transcripts</h3>
         </Box>
         <Box style={{
           padding: "10px 20px",
-          height: "20vh",
+          height: "50vh",
           overflowY: "scroll",
         }}>
           {this.state.transcripts.map((message, index) => {
@@ -148,17 +152,24 @@ class Transcripts extends React.Component {
             )
           })}
         </Box>
-        <Box sx={{ padding: "10px 20px" }}>
+        <Box 
+          sx={{ padding: "10px 20px" }}
+          style={{
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          }}>
         <Button
           variant="contained"
           style={{
-            borderRadius: 10,
+            borderRadius: 20,
             fontWeight: "bold",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            boxShadow: "none",
             padding: 10,
-            marginBottom: 20,
             background: ASSEMBO_COLORS.primary
           }}
-          startIcon={<FiberManualRecordIcon style={{color:"#FF7272"}}/>}
+          startIcon={<MicIcon style={{color:"#FF7272"}}/>}
           onClick={()=>{
             this.startButton();
           }}
