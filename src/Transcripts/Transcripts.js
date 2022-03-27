@@ -175,7 +175,7 @@ class Transcripts extends React.Component {
         }}>
           {this.state.transcripts.map((message, index) => {
             return (
-              <Box display={"flex"} marginBottom={3}>
+              <Box key={index} display={"flex"} marginBottom={3}>
                 <Box flex={1}>
                   <Button onClick={()=>{this.props.addNotes(message.text)}}>
                   <Typography style={{ inlineSize: "350px",
