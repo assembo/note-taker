@@ -1,10 +1,8 @@
 import React from "react";
 import { Box, Button, Typography } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import MicIcon from '@mui/icons-material/Mic';
 
 import { ASSEMBO_COLORS } from "../constants";
-import { RoundedCorner } from "@mui/icons-material";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -30,7 +28,7 @@ class Transcripts extends React.Component {
 
   /**
    * function to start voice transcription
-   */
+  */
   startButton = async () => {
     if (this.state.recording === true) {
       this.setState({
@@ -104,7 +102,6 @@ class Transcripts extends React.Component {
               interimBox: null
             });
             const text = event.results[i][0].transcript;
-            console.log(text);
             const newTranscript = [ { text }, ...this.state.transcripts];
             this.setState({ transcripts: newTranscript });
   
@@ -118,8 +115,6 @@ class Transcripts extends React.Component {
       };
     }
   }
-
-  
 
   render() {
     return (
