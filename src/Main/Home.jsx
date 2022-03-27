@@ -3,7 +3,6 @@ import { Box, Button } from '@mui/material';
 import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../Transcripts/NotePanel";
 import { ASSEMBO_COLORS } from "../constants";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 class Home extends React.Component {
   constructor(props) {
@@ -22,47 +21,36 @@ class Home extends React.Component {
   };
   render() {
     return (
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
-        <Box sx={{ padding: "10px 20px" }}>
-
-          <CopyToClipboard text={this.state.note}
-          onCopy={() => this.setState({copied: true})}>
-          <Button
-            variant="contained"
-            style={{
-              borderRadius: 10,
-              fontWeight: "bold",
-              padding: 10,
-              marginBottom: 20,
-              background: ASSEMBO_COLORS.primary
-            }}
-            fullWidth
-          >
-            {this.state.copied ? "Copied!" : "Copy"}
-          </Button>
-        </CopyToClipboard>
-        </Box>
-        <NotePanel
-          note={this.state.note}
-          setNotes={(e)=>{this.handleTextInputChange(e)}} 
-          addNotes={(text)=>{
-            this.setState({
-              note: `${this.state.note}\n${text}`
-            })
+      <div>
+        <div         
+          style={{
+            marginTop: "60px" /* excluding the height of the header */
           }}
-        ></NotePanel>
-        <Transcript
-        addNotes={(text)=>{
-          this.setState({
-            note: `${this.state.note}\n${text}`,
-            copied: false,
-          })
-        }}> 
-        </Transcript>
+          className="mainbox"
+          >
+          <div type="note" id="note">
+            <NotePanel
+              note={this.state.note}
+              setNotes={(e)=>{this.handleTextInputChange(e)}} 
+              addNotes={(text)=>{
+                this.setState({
+                  note: `${this.state.note}\n${text}`
+                })
+              }}
+            ></NotePanel>
+          </div>
+
+          <div type="transcript" id="transcript">
+            <Transcript
+            addNotes={(text)=>{
+              this.setState({
+                note: `${this.state.note}\n${text}`,
+                copied: false,
+              })
+            }}> 
+            </Transcript>
+          </div>
+        </div>
       </div>
     );
   }
