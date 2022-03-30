@@ -42,7 +42,7 @@ class Transcripts extends React.Component {
       ignoreOnend: false,
       startToRecord: true,
     });
-    this.recognition.lang = "en-US";
+    this.recognition.lang = 'en-US';
     this.recognition.start();
   }
   
@@ -50,7 +50,7 @@ class Transcripts extends React.Component {
     if ("webkitSpeechRecognition" in window) {
       this.recognition = new window.webkitSpeechRecognition();
       this.recognition.continuous = true;
-      this.recognition.interimResults = true;
+      this.recognition.interimResults = false;
       this.setState({
         voiceRecognitionAvailable: true
       })

@@ -1,6 +1,7 @@
 import React from "react";
 import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../NotePanel/NotePanel";
+import axios from 'axios';
 
 class Home extends React.Component {
   constructor(props) {
@@ -34,6 +35,19 @@ class Home extends React.Component {
                 this.setState({
                   note: `${this.state.note}\n${text}`
                 })
+              }}
+              onClickGenerateButton={async ()=>{
+                const result = await axios.get("http://127.0.0.1:5000/todo", {
+                  params: {
+                    text: this.state.note,
+                  },
+                })
+                this.setState({
+                  note: `${this.state.note}\n\nAction items:\n$${result.data}`,
+                  copied: false,
+                })
+                // const result = await axios.get("http://django-tutorial-app.us-west-2.elasticbeanstalk.com")
+                console.log(`onClickGenerateButton`, result);
               }}
             ></NotePanel>
           </div>
