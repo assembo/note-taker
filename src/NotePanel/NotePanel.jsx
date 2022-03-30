@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { ASSEMBO_COLORS } from "../constants";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
@@ -7,9 +7,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
-    window.mc = this;
+    this.state = {};
   }
 
   render() {
@@ -38,8 +36,6 @@ class NotePanel extends React.Component {
           }
         }}
         variant="outlined"
-          hintText="Message Field"
-          floatingLabelText="Notes"
           value={this.props.note}
           multiline
           rows={19}
@@ -63,6 +59,22 @@ class NotePanel extends React.Component {
               {this.state.copied ? "Copied!" : "Copy"}
             </Button>
         </CopyToClipboard>
+            <Button
+              onClick={this.props.onClickGenerateButton}
+              variant="contained"
+              style={{
+                borderRadius: 20,
+                fontWeight: "bold",
+                padding: 10,
+                marginBottom: 20,
+                marginTop:"10px",
+                background: ASSEMBO_COLORS.primary,
+                boxShadow:"none",
+              }}
+              fullWidth
+            >
+              {"Generate action items"}
+            </Button>
       </div>
     );
   }
