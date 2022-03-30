@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Typography } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
+import { RoundedCorner } from "@mui/icons-material";
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import { preprocessText } from "./helpers";
 
