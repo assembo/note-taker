@@ -59,6 +59,22 @@ class NotePanel extends React.Component {
               {this.state.copied ? "Copied!" : "Copy"}
             </Button>
         </CopyToClipboard>
+            <Button
+              onClick={this.props.onClickGenerateButton}
+              variant="contained"
+              style={{
+                borderRadius: 20,
+                fontWeight: "bold",
+                padding: 10,
+                marginBottom: 20,
+                marginTop:"10px",
+                background: ASSEMBO_COLORS.primary,
+                boxShadow:"none",
+              }}
+              fullWidth
+            >
+              {"Generate action items"}
+            </Button>
       </div>
     );
   }
