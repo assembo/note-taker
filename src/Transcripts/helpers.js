@@ -12,3 +12,9 @@ export const preprocessText = (rawText) => {
     return ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT;
   }
 };
+
+export const stripWhiteSpaceAddDash = (rawText) => {
+  const stripped = rawText.replace(/\s+/g, '');
+  const formattedText = `- ${stripped}`;
+  return formattedText
+}
