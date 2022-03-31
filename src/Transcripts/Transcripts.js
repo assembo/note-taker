@@ -2,9 +2,8 @@ import React from "react";
 import { Box, Button, Typography } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
-import { RoundedCorner } from "@mui/icons-material";
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
-import { preprocessText } from "./helpers";
+import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -51,7 +50,7 @@ class Transcripts extends React.Component {
     if ("webkitSpeechRecognition" in window) {
       this.recognition = new window.webkitSpeechRecognition();
       this.recognition.continuous = true;
-      this.recognition.interimResults = false;
+      this.recognition.interimResults = true;
       this.setState({
         voiceRecognitionAvailable: true
       })
@@ -119,11 +118,21 @@ class Transcripts extends React.Component {
    * @param {string} rawText string from final transcript
    */
   processText = (rawText) => {
-    const nextStep = preprocessText(rawText);
+    const formattedResult = preprocessText(rawText);
+    const nextStep = formattedResult.action;
+    let previousTranscript;
     switch (nextStep) {
       case ASSEMBO_NOTE_TAKER_COMMANDS.WRITE_IT_DOWN:
-        const previousTranscript = this.state.transcripts[0];
+        previousTranscript = this.state.transcripts[0];
         this.props.addNotes(previousTranscript.text);
+        break;
+      case ASSEMBO_NOTE_TAKER_COMMANDS.ASSIGN_TO:
+        const subject = formattedResult.subject;
+        previousTranscript = this.state.transcripts[0];
+        const previousTranscriptText = previousTranscript.text;
+        const strippedText = stripWhiteSpaceAddDash(previousTranscriptText);
+        const assignText = `${subject}: ${strippedText}`;
+        this.props.addNotes(assignText);
         break;
       case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
         const newTranscript = [ { text: rawText }, ...this.state.transcripts];
@@ -175,7 +184,21 @@ class Transcripts extends React.Component {
           height: "85%",
           overflowY: "scroll"
         }}>
-          {this.state.transcripts.map((message, index) => {
+        {
+          this.state.interimBox &&
+          <Box display={"flex"} marginBottom={3}>
+            <Box flex={1}>
+              <Button onClick={()=>{}}>
+              <Typography style={{ inlineSize: "350px",
+                overflow: "hidden",
+                textAlign: "left"
+                }} >{this.state.interimBox}</Typography>
+              </Button>
+            </Box>
+          </Box>
+        }
+        {
+          this.state.transcripts.map((message, index) => {
             return (
               <Box 
                 key={index} display={"flex"} marginBottom={3}>
@@ -192,7 +215,8 @@ class Transcripts extends React.Component {
                 </Box>
               </Box>
             )
-          })}
+          })
+        }
         </Box>
       </div>
       </div>
