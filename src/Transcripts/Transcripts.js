@@ -2,9 +2,8 @@ import React from "react";
 import { Box, Button, Typography } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
-import { RoundedCorner } from "@mui/icons-material";
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
-import { preprocessText } from "./helpers";
+import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -119,11 +118,21 @@ class Transcripts extends React.Component {
    * @param {string} rawText string from final transcript
    */
   processText = (rawText) => {
-    const nextStep = preprocessText(rawText);
+    const formattedResult = preprocessText(rawText);
+    const nextStep = formattedResult.action;
+    let previousTranscript;
     switch (nextStep) {
       case ASSEMBO_NOTE_TAKER_COMMANDS.WRITE_IT_DOWN:
-        const previousTranscript = this.state.transcripts[0];
+        previousTranscript = this.state.transcripts[0];
         this.props.addNotes(previousTranscript.text);
+        break;
+      case ASSEMBO_NOTE_TAKER_COMMANDS.ASSIGN_TO:
+        const subject = formattedResult.subject;
+        previousTranscript = this.state.transcripts[0];
+        const previousTranscriptText = previousTranscript.text;
+        const strippedText = stripWhiteSpaceAddDash(previousTranscriptText);
+        const assignText = `${subject}: ${strippedText}`;
+        this.props.addNotes(assignText);
         break;
       case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
         const newTranscript = [ { text: rawText }, ...this.state.transcripts];

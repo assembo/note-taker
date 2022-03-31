@@ -12,4 +12,15 @@ export const ASSEMBO_NOTE_TAKER_COMMANDS = {
   WRITE_IT_DOWN: "assemble write it down",
   ASSIGN_TO: "assemble assign to",
   ADD_TRANSCRIPT: "ADD_TRANSCRIPT"
-}
+};
+
+export const ASSEMBO_WRITE_IT_DOWN_VARIATIONs = [
+  "write",
+  "right",
+  "rite"
+];
+
+export const ASSEMBO_ASSIGN_DOWN_VARIATIONS = [
+  "assign",
+  "a sign"
+];
