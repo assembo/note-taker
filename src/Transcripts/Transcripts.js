@@ -150,11 +150,11 @@ class Transcripts extends React.Component {
           display: "flex",
           borderRadius: 25, 
           marginRight: "80px",
-          height: "90%"
+          height: "92%"
         }}>
       <div
         style={{
-          padding: "20px 10px"
+          padding: "15px 15px"
         }}
       >
         <Button
@@ -164,7 +164,7 @@ class Transcripts extends React.Component {
             fontWeight: "bold",
             boxShadow: "none",
             width: "64px", height: "64px",
-            background: this.state.recording ? ASSEMBO_COLORS.primary : ASSEMBO_COLORS.OFF
+            background: this.state.recording ? ASSEMBO_COLORS.OFF : ASSEMBO_COLORS.primary
           }}
           startIcon={this.state.startToRecord ? <MicIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px"}}/> :this.state.recording ? <MicIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px"}}/> : <MicOffIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px", color:"#ffffff"}}/> }
           onClick={this.toggleRecording}
@@ -174,14 +174,15 @@ class Transcripts extends React.Component {
 
       <div 
         style={{
-          padding: "0px 10px",
-          width:"100%"
+          padding: "0px 0px",
+          width:"100%",
+          textAlign: "left"
         }}>
-        <Box sx={{ padding: "10px 20px" }}>
+        <Box sx={{ padding: "10px 15px" }}>
         </Box>
         <Box style={{
-          padding: "10px 10px",
-          height: "85%",
+          padding: "10px 0px",
+          height: "540px",
           overflowY: "scroll"
         }}>
         {
@@ -189,7 +190,7 @@ class Transcripts extends React.Component {
           <Box display={"flex"} marginBottom={3}>
             <Box flex={1}>
               <Button onClick={()=>{}}>
-              <Typography style={{ inlineSize: "350px",
+              <Typography style={{
                 overflow: "hidden",
                 textAlign: "left"
                 }} >{this.state.interimBox}</Typography>

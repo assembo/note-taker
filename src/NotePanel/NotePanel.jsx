@@ -19,7 +19,7 @@ class NotePanel extends React.Component {
           borderRadius: 25,
           flexGrow: 1,
           marginLeft: "80px",
-          height: "90%"
+          height: "91%"
         }}
       >
         <TextField
@@ -50,10 +50,11 @@ class NotePanel extends React.Component {
                 borderRadius: 20,
                 fontWeight: "bold",
                 padding: 10,
-                marginBottom: 20,
+                marginBottom: 10,
                 marginTop:"10px",
-                background: ASSEMBO_COLORS.primary,
-                boxShadow:"none",
+                color: ASSEMBO_COLORS.primary,
+                background: "white",
+                boxShadow:"1 1 1 1"
               }}
               fullWidth
             >
@@ -68,9 +69,10 @@ class NotePanel extends React.Component {
                 fontWeight: "bold",
                 padding: 10,
                 marginBottom: 20,
-                marginTop:"10px",
-                background: ASSEMBO_COLORS.primary,
-                boxShadow:"none",
+                marginTop:"0px",
+                color: ASSEMBO_COLORS.primary,
+                background: "white",
+                boxShadow:"1 1 1 1"
               }}
               fullWidth
             >
