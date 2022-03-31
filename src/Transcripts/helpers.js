@@ -14,7 +14,7 @@ export const preprocessText = (rawText) => {
 };
 
 export const stripWhiteSpaceAddDash = (rawText) => {
-  const stripped = rawText.replace(/\s+/g, '');
+  const stripped = rawText.trim();
   const formattedText = `- ${stripped}`;
   return formattedText
 }
