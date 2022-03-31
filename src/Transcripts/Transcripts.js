@@ -141,7 +141,7 @@ class Transcripts extends React.Component {
           display: "flex",
           borderRadius: 25, 
           marginRight: "80px",
-          height: "93%"
+          height: "90%"
         }}>
       <div
         style={{
@@ -165,23 +165,28 @@ class Transcripts extends React.Component {
 
       <div 
         style={{
-          padding: "0px 10px"
+          padding: "0px 10px",
+          width:"100%"
         }}>
         <Box sx={{ padding: "10px 20px" }}>
         </Box>
         <Box style={{
           padding: "10px 10px",
-          height: "70vh",
-          overflowY: "scroll",
+          height: "85%",
+          overflowY: "scroll"
         }}>
           {this.state.transcripts.map((message, index) => {
             return (
-              <Box key={index} display={"flex"} marginBottom={3}>
-                <Box flex={1}>
+              <Box 
+                key={index} display={"flex"} marginBottom={3}>
+                <Box 
+                  flex={1}
+                  >
                   <Button onClick={()=>{this.props.addNotes(message.text)}}>
-                  <Typography style={{ inlineSize: "350px",
-                    overflow: "hidden",
-                    textAlign: "left"
+                  <Typography 
+                    style={{ 
+                      overflow:"hidden",
+                      textAlign: "left"
                     }} >{message.text}</Typography>
                   </Button>
                 </Box>

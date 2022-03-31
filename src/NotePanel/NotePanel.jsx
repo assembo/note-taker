@@ -18,7 +18,8 @@ class NotePanel extends React.Component {
           padding: "5px 20px",
           borderRadius: 25,
           flexGrow: 1,
-          marginLeft: "80px"
+          marginLeft: "80px",
+          height: "90%"
         }}
       >
         <TextField
