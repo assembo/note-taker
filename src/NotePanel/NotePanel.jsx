@@ -61,7 +61,7 @@ class NotePanel extends React.Component {
               {this.state.copied ? "Copied!" : "Copy"}
             </Button>
         </CopyToClipboard>
-            <Button
+            {/* <Button
               onClick={this.props.onClickGenerateButton}
               variant="contained"
               style={{
@@ -77,7 +77,7 @@ class NotePanel extends React.Component {
               fullWidth
             >
               {"Generate action items"}
-            </Button>
+            </Button> */}
       </div>
     );
   }

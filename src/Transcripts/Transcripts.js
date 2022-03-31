@@ -10,8 +10,8 @@ class Transcripts extends React.Component {
     super(props);
     this.state = {
       transcripts: [
-        { text: "← Press the Mic Button" },
-        { text: "Then say something :D" }
+        { text: "← Press the Mic Button", isNew: false },
+        { text: "Then say something :D", isNew: false}
       ],
       recording: false,
       interimBox: null,
@@ -26,6 +26,24 @@ class Transcripts extends React.Component {
     this.setupWebkitSpeechRecognition();
   }
 
+
+  processTranscripts(){
+    const newTranscripts = this.state.transcripts.filter(x=>x.isNew===true);
+    console.log(`hahaha`);
+    if (newTranscripts && newTranscripts.length > 0){
+      this.props.processTranscripts(newTranscripts);
+    }
+    const transcripts = this.state.transcripts.map(x=>{
+      return {
+        text: x.text,
+        isNew: false,
+      }
+    })
+    this.setState({
+      transcripts: transcripts
+    })
+  }
+
   /**
    * function to start voice transcription
   */
@@ -35,6 +53,8 @@ class Transcripts extends React.Component {
         recording: false
       });
       this.recognition.stop();
+      // process the transcript
+      this.processTranscripts();
       return;
     }
     await this.setState({
@@ -135,7 +155,7 @@ class Transcripts extends React.Component {
         this.props.addNotes(assignText);
         break;
       case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
-        const newTranscript = [ { text: rawText }, ...this.state.transcripts];
+        const newTranscript = [ { text: rawText, isNew: true }, ...this.state.transcripts];
         this.setState({ transcripts: newTranscript });
         break;
       default:
