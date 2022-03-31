@@ -31,8 +31,10 @@ class Home extends React.Component {
               note={this.state.note}
               setNotes={(e)=>{this.handleTextInputChange(e)}} 
               addNotes={(text)=>{
+                // strip white space
+                const stripped = text.replace(/\s+/g, '')
                 this.setState({
-                  note: `${this.state.note}\n${text}`
+                  note: `${this.state.note}\n${stripped}`
                 })
               }}
             ></NotePanel>
