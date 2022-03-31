@@ -2,7 +2,6 @@ import React from "react";
 import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../NotePanel/NotePanel";
 import axios from 'axios';
-import { stripWhiteSpaceAddDash } from "../Transcripts/helpers";
 
 class Home extends React.Component {
   constructor(props) {
@@ -33,11 +32,9 @@ class Home extends React.Component {
               note={this.state.note}
               setNotes={(e)=>{this.handleTextInputChange(e)}} 
               addNotes={(text)=>{
-                // strip white space
-                const formattedText = stripWhiteSpaceAddDash(text);
                 this.setState({
-                  note: `${this.state.note}\n${formattedText}`
-                });
+                  note: `${this.state.note}\n${text}`
+                })
               }}
               onClickGenerateButton={async ()=>{
                 const result = await axios.get("http://127.0.0.1:5000/todo", {
@@ -57,15 +54,12 @@ class Home extends React.Component {
 
           <div type="transcript" id="transcript">
             <Transcript
-              addNotes={(text)=>{
-                // strip white space
-                const formattedText = stripWhiteSpaceAddDash(text);
-                this.setState({
-                  note: `${this.state.note}\n${formattedText}`,
-                  copied: false,
-                })
-              }}
-            > 
+            addNotes={(text)=>{
+              this.setState({
+                note: `${this.state.note}\n${text}`,
+                copied: false,
+              })
+            }}> 
             </Transcript>
           </div>
         </div>
