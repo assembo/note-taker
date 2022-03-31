@@ -50,7 +50,7 @@ class Transcripts extends React.Component {
     if ("webkitSpeechRecognition" in window) {
       this.recognition = new window.webkitSpeechRecognition();
       this.recognition.continuous = true;
-      this.recognition.interimResults = false;
+      this.recognition.interimResults = true;
       this.setState({
         voiceRecognitionAvailable: true
       })
@@ -183,7 +183,21 @@ class Transcripts extends React.Component {
           height: "70vh",
           overflowY: "scroll",
         }}>
-          {this.state.transcripts.map((message, index) => {
+        {
+          this.state.interimBox &&
+          <Box display={"flex"} marginBottom={3}>
+            <Box flex={1}>
+              <Button onClick={()=>{}}>
+              <Typography style={{ inlineSize: "350px",
+                overflow: "hidden",
+                textAlign: "left"
+                }} >{this.state.interimBox}</Typography>
+              </Button>
+            </Box>
+          </Box>
+        }
+        {
+          this.state.transcripts.map((message, index) => {
             return (
               <Box key={index} display={"flex"} marginBottom={3}>
                 <Box flex={1}>
@@ -196,7 +210,8 @@ class Transcripts extends React.Component {
                 </Box>
               </Box>
             )
-          })}
+          })
+        }
         </Box>
       </div>
       </div>
