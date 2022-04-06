@@ -19,12 +19,12 @@ class NotePanel extends React.Component {
           borderRadius: 25,
           flexGrow: 1,
           marginLeft: "80px",
-          height: "91%"
+          height: "98.5%"
         }}
       >
         <TextField
           style={{textAlign: 'left',
-          width:"100%",
+          width:"100%"
         }}
         sx={{
 
@@ -48,10 +48,10 @@ class NotePanel extends React.Component {
               variant="contained"
               style={{
                 borderRadius: 20,
-                fontWeight: "bold",
+                fontWeight: "bolder",
                 padding: 10,
                 marginBottom: 10,
-                marginTop:"10px",
+                marginTop:"30px",
                 color: ASSEMBO_COLORS.primary,
                 background: "white",
                 boxShadow:"1 1 1 1"

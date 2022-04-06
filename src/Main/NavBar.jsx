@@ -4,6 +4,7 @@ import logo from "../assets/images/assembo-icon-small.png";
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
+import { ASSEMBO_COLORS } from '../constants';
 
 export default function NavBar() {
   return (
@@ -14,8 +15,10 @@ export default function NavBar() {
         >
         <Toolbar>
           <IconButton>
-            <img src={logo} className="App-logo" alt="logo" style={ { height:"50px",margin: "1px" } }/>
+            <img src={logo} className="App-logo" alt="logo" style={ { height:"50px",margin: "0px" } }/> 
+            {/* <p style={ { margin:"5px",fontSize:"18px", color:"gray", fontWeight:"bold" } }>ASSEMBO</p> */}
           </IconButton>
+          
         </Toolbar>
       </AppBar>
     </Box>

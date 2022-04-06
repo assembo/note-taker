@@ -144,14 +144,14 @@ class Transcripts extends React.Component {
     switch (nextStep) {
       case ASSEMBO_NOTE_TAKER_COMMANDS.WRITE_IT_DOWN:
         previousTranscript = this.state.transcripts[0];
-        this.props.addNotes(previousTranscript.text);
+        this.props.addNotes(stripWhiteSpaceAddDash(previousTranscript.text));
         break;
       case ASSEMBO_NOTE_TAKER_COMMANDS.ASSIGN_TO:
         const subject = formattedResult.subject;
         previousTranscript = this.state.transcripts[0];
         const previousTranscriptText = previousTranscript.text;
-        const strippedText = stripWhiteSpaceAddDash(previousTranscriptText);
-        const assignText = `${subject}: ${strippedText}`;
+        const strippedText = previousTranscriptText;
+        const assignText = stripWhiteSpaceAddDash(`${subject}:${strippedText}`);
         this.props.addNotes(assignText);
         break;
       case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
@@ -170,7 +170,7 @@ class Transcripts extends React.Component {
           display: "flex",
           borderRadius: 25, 
           marginRight: "80px",
-          height: "92%"
+          height: "100%"
         }}>
       <div
         style={{
@@ -202,7 +202,7 @@ class Transcripts extends React.Component {
         </Box>
         <Box style={{
           padding: "10px 0px",
-          height: "540px",
+          height: "520px",
           overflowY: "scroll"
         }}>
         {
@@ -226,7 +226,7 @@ class Transcripts extends React.Component {
                 <Box 
                   flex={1}
                   >
-                  <Button onClick={()=>{this.props.addNotes(message.text)}}>
+                  <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(message.text))}}>
                   <Typography 
                     style={{ 
                       overflow:"hidden",
