@@ -42,7 +42,7 @@ class NotePanel extends React.Component {
           rows={19}
           onChange={this.props.setNotes}
         />
-        <CopyToClipboard text={this.state.note}
+        <CopyToClipboard text={this.props.note}
             onCopy={() => this.setState({copied: true})}>
             <Button
               variant="contained"

@@ -61,9 +61,7 @@ class Home extends React.Component {
           <div type="transcript" id="transcript">
             <Transcript
             processTranscripts={async (texts)=>{
-              console.log(`text,`, texts);
               const text = this.aggregateTexts(texts.map(x=>x.text))
-              console.log(`text,`, text);
               if (!text){
                 return
               }
