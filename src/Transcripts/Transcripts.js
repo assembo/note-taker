@@ -97,12 +97,8 @@ class Transcripts extends React.Component {
       };
   
       this.recognition.onend = () => {
-        if (this.state.ignoreOnend) {
-          return;
-        }
-        if (!this.state.finalTranscript) {
-          return;
-        }
+        if (!this.state.recording) return;
+        this.recognition.start();
       };
   
       this.recognition.onresult = async (event) => {
