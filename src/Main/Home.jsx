@@ -1,11 +1,8 @@
 import React from "react";
 import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../NotePanel/NotePanel";
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import SnackbarNotification from "../Transcripts/Notification";
+import SnackbarNotification from "../Notification/Notification";
 
 class Home extends React.Component {
   constructor(props) {
