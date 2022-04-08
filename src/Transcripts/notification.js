@@ -1,53 +1,43 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert from '@mui/material/Alert';
 
-export function SnackbarNotification(notesToAdd) {
-    const [open, setOpen] = React.useState(false);
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
-    // TODO: set this handleClick as message.text in Transcript
-    const handleClick = () => {
-        setOpen(true);
-    };
+const SNACKBAR_EXPIRATION_TIMER = 6000;
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
+export default function SnackbarNotification({
+  open,
+  handleClose,
+}) {
+  const action = (
+    <React.Fragment>
+        <IconButton 
+          size="small" 
+          aria-label="close" 
+          color="inherit" 
+          onClick={handleClose}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+    </React.Fragment>
+  );
 
-        setOpen(false);
-    };
-
-    const action = (
-        <React.Fragment>
-            {/* UNDO button is optional */}
-            {/* <Button color="secondary" size="small" onClick={handleClose}>
-                UNDO
-            </Button> */}
-            <IconButton 
-              size="small" 
-              aria-label="close" 
-              color="inherit" 
-              onClick={handleClose}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-        </React.Fragment>
-    );
-
-    return (
-        <div>
-            {/* TODO: Modify to push notification when clicking on a message.text */}
-            <Button onClick={handleClick}>{notesToAdd}</Button>
-            <Snackbar
-              open={open} 
-              autoHideDuration={6000} 
-              onClose={handleClose} 
-              message="Note added" 
-              action={action}
-            />
-        </div>
-    );
-}
+  return (
+    <div>
+      <Snackbar
+        open={open} 
+        autoHideDuration={SNACKBAR_EXPIRATION_TIMER} 
+        onClose={handleClose} 
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Note added
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+};
