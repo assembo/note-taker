@@ -2,12 +2,14 @@ import React from "react";
 import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../NotePanel/NotePanel";
 import axios from 'axios';
+import SnackbarNotification from "../Notification/Notification";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      note: "Add notes..."
+      note: "Add notes...",
+      open: false,
     };
     window.mc = this;
   }
@@ -79,10 +81,15 @@ class Home extends React.Component {
               this.setState({
                 note: `${this.state.note}\n${text}`,
                 copied: false,
+                open: true
               })
             }}> 
             </Transcript>
           </div>
+          <SnackbarNotification 
+            open={this.state.open}
+            handleClose={()=>{ this.setState( {open: false} ) }}
+          />
         </div>
       </div>
     );
