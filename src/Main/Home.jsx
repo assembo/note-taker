@@ -6,6 +6,7 @@ import axios from 'axios';
 import SnackbarNotification from "../Notification/Notification";
 import { BaseIconButton } from "../BaseComponents/BaseIconButton";
 import "./Home.css";
+import Swal from 'sweetalert2'
 
 class Home extends React.Component {
   constructor(props) {
@@ -87,7 +88,13 @@ class Home extends React.Component {
           <BaseIconButton 
             styleOverride={ { margin: "50px 95px 15px auto" } }
             icon={<QuestionMarkIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px"}}/>}
-            callback={()=>{}}
+            callback={()=>{
+              Swal.fire(
+                "Help is on the way!",
+                'Just contact us at contact@assembo.ai',
+                'success'
+              );
+            }}
           />
           <SnackbarNotification
             open={this.state.open}
