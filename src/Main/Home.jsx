@@ -45,7 +45,7 @@ class Home extends React.Component {
                 })
               }}
               onClickGenerateButton={async ()=>{
-                const result = await axios.get("http://127.0.0.1:5000/todo", {
+                const result = await axios.get("http://note-taker-backend-dev.us-west-2.elasticbeanstalk.com/todo", {
                   params: {
                     text: this.state.note,
                   },
@@ -67,7 +67,7 @@ class Home extends React.Component {
               if (!text){
                 return
               }
-              const result = await axios.get("http://127.0.0.1:5000/todo", {
+              const result = await axios.get("http://note-taker-backend-dev.us-west-2.elasticbeanstalk.com/todo", {
                 params: {
                   text: text,
                 },
