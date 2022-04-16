@@ -86,13 +86,13 @@ class Home extends React.Component {
             </div>
           </div>
           <BaseIconButton 
-            styleOverride={ { margin: "50px 95px 15px auto" } }
-            icon={<QuestionMarkIcon style={{ width: "30px", height: "30px", margin: "0 0 0 12px"}}/>}
+            styleOverride={ {position: "absolute", right:"10px", bottom:"10px" } }
+            icon={<QuestionMarkIcon style={{ width: "25px", height: "30px", margin: "0 0 0 12px"}}/>}
             callback={()=>{
               Swal.fire(
-                "Help is on the way!",
-                'Just contact us at contact@assembo.ai',
-                'success'
+                "Help is on the way! <br> Contact us at contact@assmbo.ai",
+                'Visit https://www.assembo.ai/ for more information',
+                'success',
               );
             }}
           />
