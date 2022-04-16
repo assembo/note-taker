@@ -1,4 +1,4 @@
-.secondaryButton
+.assemboSecondaryButton
 {
     border-radius: 20px;
     font-weight: bolder;
@@ -9,7 +9,7 @@
     margin-bottom: 5px;
     color: #45d8d8;
     background: white;
-    box-shadow: 1 1 1 1;
+    box-shadow: 1px 1px 1px 1px;
 }
 
 .containershadow
@@ -19,5 +19,5 @@
     flex-grow: 1;
     margin-left: 80px;
     margin-right: 0px;
-    height: 98.5%;
+    height: 98%;
 }

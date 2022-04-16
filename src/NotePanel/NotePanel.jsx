@@ -40,7 +40,18 @@ class NotePanel extends React.Component {
             <Button
               variant="contained"
               fullWidth
-              className="secondaryButton"
+              style={{
+                borderRadius: '20px',
+                fontWeight: 'bolder',
+                padding: '10px',
+                marginRight: '5px',
+                marginLeft: '5px',
+                marginTop: '10px',
+                marginBottom: '5px',
+                color: '#45d8d8',
+                background: 'white',
+                boxShadow: '1 1 1 1',
+              }}
             >
               {this.state.copied ? "Copied!" : "Copy to clipboard"}
             </Button>
@@ -48,7 +59,18 @@ class NotePanel extends React.Component {
         <Button
             variant="contained"
             fullWidth
-            className="secondaryButton"
+            style={{
+              borderRadius: '20px',
+              fontWeight: 'bolder',
+              padding: '10px',
+              marginRight: '5px',
+              marginLeft: '5px',
+              marginTop: '10px',
+              marginBottom: '5px',
+              color: '#45d8d8',
+              background: 'white',
+              boxShadow: '1 1 1 1',
+            }}
             onClick={ async()=>{
               const { value: email } = await Swal.fire({
                 title: 'Send notes to email',

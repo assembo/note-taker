@@ -30,8 +30,7 @@
 }
 
 .mainbox {
-  display: flex;
-  flex-wrap: wrap;
+  
 }
 
 #note, #transcript {
