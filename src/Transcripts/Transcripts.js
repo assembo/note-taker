@@ -165,8 +165,9 @@ class Transcripts extends React.Component {
         style={{
           display: "flex",
           borderRadius: 25, 
+          flexGrow: 1,
           marginRight: "80px",
-          height: "100%"
+          height: "98%"
         }}>
       <div
         style={{

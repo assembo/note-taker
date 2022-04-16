@@ -4,6 +4,7 @@ import NotePanel from "../NotePanel/NotePanel";
 import axios from 'axios';
 import SnackbarNotification from "../Notification/Notification";
 
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -27,13 +28,15 @@ class Home extends React.Component {
   }
 
   render() {
+
     return (
       <div>
         <div         
           style={{
-            marginTop: "60px" /* excluding the height of the header */
+            marginTop: "60px", /* excluding the height of the header */
+            display: "flex",
+            flexWrap: "wrap"
           }}
-          className="mainbox"
           >
           <div type="note" id="note">
             <NotePanel
@@ -60,7 +63,13 @@ class Home extends React.Component {
             ></NotePanel>
           </div>
 
-          <div type="transcript" id="transcript">
+          <div 
+            type="transcript" 
+            id="transcript"
+            style={{
+              flexGrow: 1
+            }}
+            >
             <Transcript
             processTranscripts={async (texts)=>{
               const text = this.aggregateTexts(texts.map(x=>x.text))
