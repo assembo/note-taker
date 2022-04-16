@@ -3,6 +3,7 @@ import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../NotePanel/NotePanel";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import axios from 'axios';
+import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import SnackbarNotification from "../Notification/Notification";
 import { BaseIconButton } from "../BaseComponents/BaseIconButton";
 import "./Home.css";
@@ -89,11 +90,12 @@ class Home extends React.Component {
             styleOverride={ {position: "absolute", right:"10px", bottom:"10px" } }
             icon={<QuestionMarkIcon style={{ width: "25px", height: "30px", margin: "0 0 0 12px"}}/>}
             callback={()=>{
-              Swal.fire(
-                "Help is on the way! <br> Contact us at contact@assmbo.ai",
-                'Visit https://www.assembo.ai/ for more information',
-                'success',
-              );
+              Swal.fire({
+                title: 'Help is on the way! <br>Contact us at contact@assmbo.ai',
+                text: 'Visit https://www.assembo.ai/ for more information',
+                icon: 'success',
+                confirmButtonColor: ASSEMBO_COLORS.primary
+              });
             }}
           />
           <SnackbarNotification
