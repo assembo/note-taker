@@ -1,0 +1,9 @@
+.mainbox {
+  display: flex;
+  margin-top: 60px;
+  flex-direction: column;
+}
+
+.note-transcript-box {
+  display: flex;
+}
