@@ -1,7 +1,7 @@
 import React from "react";
 import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../NotePanel/NotePanel";
-import axios from 'axios';
+import axios from '../axios';
 import SnackbarNotification from "../Notification/Notification";
 
 
@@ -10,9 +10,8 @@ class Home extends React.Component {
     super(props);
     this.state = {
       note: "Add notes...",
-      open: false,
+      open: false
     };
-    window.mc = this;
   }
 
   handleTextInputChange = event => {
@@ -48,7 +47,7 @@ class Home extends React.Component {
                 })
               }}
               onClickGenerateButton={async ()=>{
-                const result = await axios.get("http://127.0.0.1:5000/todo", {
+                const result = await axios.get("todo", {
                   params: {
                     text: this.state.note,
                   },
@@ -76,7 +75,7 @@ class Home extends React.Component {
               if (!text){
                 return
               }
-              const result = await axios.get("http://127.0.0.1:5000/todo", {
+              const result = await axios.get("todo", {
                 params: {
                   text: text,
                 },
@@ -97,7 +96,9 @@ class Home extends React.Component {
           </div>
           <SnackbarNotification 
             open={this.state.open}
-            handleClose={()=>{ this.setState( {open: false} ) }}
+            handleClose={()=>{ 
+              this.setState( {open: false} );
+            }}
           />
         </div>
       </div>

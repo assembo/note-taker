@@ -10,7 +10,6 @@ class NotePanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    window.notes = this;
   }
   render() {
     return (
@@ -86,7 +85,7 @@ class NotePanel extends React.Component {
                   title:`Assembo's notes sent to: ${email}`,
                   confirmButtonColor: ASSEMBO_COLORS.primary}
                 );
-                const result = await axios.get("http://127.0.0.1:5000/send_email", 
+                await axios.get("send_email", 
                   {
                     params: {
                     toEmail: email,

@@ -19,7 +19,6 @@ class Transcripts extends React.Component {
       ignoreOnend: null,
       voiceRecognitionAvailable: false,
     };
-    window.transcript = this;
   }
 
   componentDidMount() {
@@ -29,7 +28,6 @@ class Transcripts extends React.Component {
 
   processTranscripts(){
     const newTranscripts = this.state.transcripts.filter(x=>x.isNew===true);
-    console.log(`hahaha`);
     if (newTranscripts && newTranscripts.length > 0){
       this.props.processTranscripts(newTranscripts);
     }
