@@ -3,7 +3,11 @@ import Transcript from "../Transcripts/Transcripts";
 import NotePanel from "../NotePanel/NotePanel";
 import axios from '../axios';
 import SnackbarNotification from "../Notification/Notification";
-
+import { BaseIconButton } from "../BaseComponents/BaseIconButton";
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import Swal from 'sweetalert2';
+import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
+import "./Home.css";
 
 class Home extends React.Component {
   constructor(props) {
@@ -94,6 +98,18 @@ class Home extends React.Component {
             }}> 
             </Transcript>
           </div>
+          <BaseIconButton 
+            styleOverride={ {position: "absolute", right:"80px", bottom:"50px" } }
+            icon={<QuestionMarkIcon style={{ width: "25px", height: "30px", margin: "0 0 0 12px"}}/>}
+            callback={()=>{
+              Swal.fire({
+                title: 'Help is on the way! <br>Contact us at contact@assmbo.ai',
+                text: 'Visit https://www.assembo.ai/ for more information',
+                icon: 'success',
+                confirmButtonColor: ASSEMBO_COLORS.primary
+              });
+            }}
+          />
           <SnackbarNotification 
             open={this.state.open}
             handleClose={()=>{ 
