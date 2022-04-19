@@ -98,23 +98,6 @@ class NotePanel extends React.Component {
             }}
         >Send to email</Button>
         </div>
-            {/* <Button
-              onClick={this.props.onClickGenerateButton}
-              variant="contained"
-              style={{
-                borderRadius: 20,
-                fontWeight: "bold",
-                padding: 10,
-                marginBottom: 20,
-                marginTop:"0px",
-                color: ASSEMBO_COLORS.primary,
-                background: "white",
-                boxShadow:"1 1 1 1"
-              }}
-              fullWidth
-            >
-              {"Generate action items"}
-            </Button> */}
       </div>
     );
   }
