@@ -3,7 +3,7 @@ import { Button, TextField } from '@mui/material';
 import { ASSEMBO_COLORS } from "../constants";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import axios from '../axios';
 import './NotePanel.css';
 
 class NotePanel extends React.Component {
