@@ -3,14 +3,13 @@ import { Button, TextField } from '@mui/material';
 import { ASSEMBO_COLORS } from "../constants";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import axios from '../axios';
 import './NotePanel.css';
 
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    window.notes = this;
   }
   render() {
     return (
@@ -86,7 +85,7 @@ class NotePanel extends React.Component {
                   title:`Assembo's notes sent to: ${email}`,
                   confirmButtonColor: ASSEMBO_COLORS.primary}
                 );
-                const result = await axios.get("http://127.0.0.1:5000/send_email", 
+                await axios.get("send_email", 
                   {
                     params: {
                     toEmail: email,
@@ -98,23 +97,6 @@ class NotePanel extends React.Component {
             }}
         >Send to email</Button>
         </div>
-            {/* <Button
-              onClick={this.props.onClickGenerateButton}
-              variant="contained"
-              style={{
-                borderRadius: 20,
-                fontWeight: "bold",
-                padding: 10,
-                marginBottom: 20,
-                marginTop:"0px",
-                color: ASSEMBO_COLORS.primary,
-                background: "white",
-                boxShadow:"1 1 1 1"
-              }}
-              fullWidth
-            >
-              {"Generate action items"}
-            </Button> */}
       </div>
     );
   }
