@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: `http://api.assembo.ai/`
+  baseURL: `https://api.assembo.ai/`
 });
