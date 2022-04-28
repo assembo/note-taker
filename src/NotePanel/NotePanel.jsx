@@ -75,6 +75,10 @@ class NotePanel extends React.Component {
                 title: 'Send notes to email',
                 input: 'email',
                 inputPlaceholder: 'Enter your email address',
+                inputAttributes: {
+                  name: "email",
+                  autocomplete: "on"
+                },
                 confirmButtonColor: ASSEMBO_COLORS.primary,
                 confirmButtonText: "SEND",
                 borderRadius: "25px"
