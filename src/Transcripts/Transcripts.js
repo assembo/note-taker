@@ -173,7 +173,7 @@ class Transcripts extends React.Component {
         }}
       >
         <Button
-          className="transcript__mic-toggle"
+          id="transcript__mic-toggle"
           variant="contained"
           style={{
             borderRadius: 45,
