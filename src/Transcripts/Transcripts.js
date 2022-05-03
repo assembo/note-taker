@@ -217,6 +217,8 @@ class Transcripts extends React.Component {
         }
         {
           this.state.transcripts.map((message, index) => {
+            const text = message.text.toLowerCase();
+            text[0] = text[0].toUpperCase();
             return (
               <Box 
                 key={index} display={"flex"} marginBottom={3}>
@@ -228,7 +230,7 @@ class Transcripts extends React.Component {
                     style={{ 
                       overflow:"hidden",
                       textAlign: "left"
-                    }} >{message.text}</Typography>
+                    }} >{text}</Typography>
                   </Button>
                 </Box>
               </Box>
