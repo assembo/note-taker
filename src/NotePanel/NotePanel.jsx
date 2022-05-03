@@ -73,9 +73,11 @@ class NotePanel extends React.Component {
             onClick={ async()=>{
               const { value: email } = await Swal.fire({
                 title: 'Send notes to email',
-                html: `<input name="email" class="swal2-input" placeholder="Enter your email address" type="email" style="display: flex;">`,
+                input: 'email',
+                inputPlaceholder: 'Enter your email address',
                 confirmButtonColor: ASSEMBO_COLORS.primary,
                 confirmButtonText: "SEND",
+                borderRadius: "25px"
               });
               
               if (email) {
