@@ -37,8 +37,6 @@ class NotePanel extends React.Component {
         <CopyToClipboard text={this.props.note}
             onCopy={() => this.setState({copied: true})}>
             <Button
-              id="NotePanel__copy-button"
-              className="NotePanel__copy-button"
               variant="contained"
               fullWidth
               style={{
