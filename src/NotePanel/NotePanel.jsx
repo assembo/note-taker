@@ -58,8 +58,6 @@ class NotePanel extends React.Component {
             </Button>
         </CopyToClipboard>
         <Button
-            id="NotePanel__send-email-button"
-            className="NotePanel__send-email-button"
             variant="contained"
             fullWidth
             style={{
