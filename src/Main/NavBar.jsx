@@ -7,13 +7,11 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import axios from '../axios';
 
+//Error handling code in the case gscript doesn't load properly.
 const google=window.google;
 
-function handleCredentialResponse(response) {
-  console.log("Encoded JWT ID token: " + response.credential);
-  axios.post('/',{
-    token:response.credential
-  })
+function handleCredentialResponse(response){
+  axios.get('login',{withCredentials:false,'Authorization':response.credential})
 }
 function oneTapSignIn(){
     google.accounts?.id.initialize({
