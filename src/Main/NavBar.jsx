@@ -6,7 +6,9 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import axios from '../axios';
+import "./NavBar.css"
 
+console.log(process.env.REACT_APP_CLIENT_ID)
 //Error handling code in the case gscript doesn't load properly.
 const google=window.google;
 
@@ -15,7 +17,7 @@ function handleCredentialResponse(response){
 }
 function oneTapSignIn(){
     google.accounts?.id.initialize({
-          client_id: "6477792390-o5ibvubommbu11vhlglimjc0tor67reb.apps.googleusercontent.com",
+          client_id: process.env.REACT_APP_CLIENT_ID,
           callback: handleCredentialResponse
           });
     google.accounts?.id.renderButton(
@@ -34,9 +36,9 @@ export default function NavBar() {
         >
         <Toolbar>
           <IconButton>
-            <img src={logo} className="App-logo" alt="logo" style={ { height:"50px",margin: "0px" } }/> 
+            <img src={logo} className="App-logo" alt="logo"/> 
           </IconButton>
-          <Button id="buttonDiv" onClick={()=>oneTapSignIn()} style={{marginLeft:"85%"}}>Login</Button>  
+          <Button id="buttonDiv" className="login-Button" onClick={()=>oneTapSignIn()}>Login</Button>  
         </Toolbar>
       </AppBar>
     </Box>
