@@ -1,9 +1,5 @@
 import React from "react";
-<<<<<<< Updated upstream
 import { Box, Button, Typography, Popover} from '@mui/material';
-=======
-import { Box, Button, Typography,Popover } from '@mui/material';
->>>>>>> Stashed changes
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
@@ -23,11 +19,8 @@ class Transcripts extends React.Component {
       finalTranscript: null,
       ignoreOnend: null,
       voiceRecognitionAvailable: false,
-<<<<<<< Updated upstream
-      anchorEl: null
-=======
-      handleEl:true
->>>>>>> Stashed changes
+      anchorEl: null,
+      popoverText: ""
     };
   }
 
@@ -238,70 +231,49 @@ class Transcripts extends React.Component {
           this.state.transcripts.map((message, index) => {
             return (
               <>
-<<<<<<< Updated upstream
                <div>
                   <Box 
                   key={index} display={"flex"} marginBottom={3} aria-describedby={id} onClick={this.handleClick}>
                   <Box 
                     flex={1}
                     >
-                    <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(message.text))}}>
+                    <Button onClick={(event)=>{
+                        // length check
+                        // if it is longer or equal to 30 then make request to corresponding endpoint
+                        this.setState({
+                          anchorEl: event.currentTarget,
+                          popoverText: stripWhiteSpaceAddDash(message.text)
+                        })
+                        // else 
+                        this.props.addNotes(stripWhiteSpaceAddDash(message.text))
+                      }}>
                     <Typography 
                       style={{ 
                         overflow:"hidden",
                         textAlign: "left"
                       }} >{message.text}</Typography>
-                      <Popover
-                        id={id}
-                        open={openingPopup}
-                        anchorEl={this.state.anchorEl}
-                        onClose={this.handleClose}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'left',
-                        }}
-                      >
-                        <Typography  sx={{ p:2 }}>{message.text}</Typography>
-                      </Popover>
                     </Button>
                   </Box>
                 </Box>
               </div>
               </>
               
-=======
-              <Box 
-                key={index} display={"flex"} marginBottom={3}>
-                <Box 
-                  flex={1}
-                  >
-                  <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(message.text))}}>
-                  <Typography 
-                    style={{ 
-                      overflow:"hidden",
-                      textAlign: "left"
-                    }} >{message.text}</Typography>
-                  </Button>
-                </Box>
-              </Box>
-              <Popover
-                id={index}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-              >
-                <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-              </Popover>
-              </>
->>>>>>> Stashed changes
             )
           })
         }
         </Box>
+        <Popover
+            id={id}
+            open={openingPopup}
+            anchorEl={this.state.anchorEl}
+            onClose={this.handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <Typography  sx={{ p:2 }}>{this.state.popoverText}</Typography>
+        </Popover>
 
       </div>
       </div>
