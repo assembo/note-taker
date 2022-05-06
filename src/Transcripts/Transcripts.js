@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, Popover} from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
+
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Transcripts extends React.Component {
       finalTranscript: null,
       ignoreOnend: null,
       voiceRecognitionAvailable: false,
+      anchorEl: null
     };
   }
 
@@ -156,8 +158,19 @@ class Transcripts extends React.Component {
         break;
     }
   }
+  
+  handleClose=()=>
+    this.setState({
+      anchorEl: null})
+  
+  handleClick = (event) => {
+    this.setState({anchorEl:event.currentTarget});
+  };
+ 
 
   render() {
+    let openingPopup =Boolean(this.state.anchorEl)
+    let id =openingPopup ? 'simple-popover' : undefined
     return (
       <div className="containershadow" 
         style={{
@@ -216,24 +229,42 @@ class Transcripts extends React.Component {
         {
           this.state.transcripts.map((message, index) => {
             return (
-              <Box 
-                key={index} display={"flex"} marginBottom={3}>
-                <Box 
-                  flex={1}
-                  >
-                  <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(message.text))}}>
-                  <Typography 
-                    style={{ 
-                      overflow:"hidden",
-                      textAlign: "left"
-                    }} >{message.text}</Typography>
-                  </Button>
+              <>
+               <div>
+                  <Box 
+                  key={index} display={"flex"} marginBottom={3} aria-describedby={id} onClick={this.handleClick}>
+                  <Box 
+                    flex={1}
+                    >
+                    <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(message.text))}}>
+                    <Typography 
+                      style={{ 
+                        overflow:"hidden",
+                        textAlign: "left"
+                      }} >{message.text}</Typography>
+                      <Popover
+                        id={id}
+                        open={openingPopup}
+                        anchorEl={this.state.anchorEl}
+                        onClose={this.handleClose}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'left',
+                        }}
+                      >
+                        <Typography  sx={{ p:2 }}>{message.text}</Typography>
+                      </Popover>
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
+              </div>
+              </>
+              
             )
           })
         }
         </Box>
+
       </div>
       </div>
     );
