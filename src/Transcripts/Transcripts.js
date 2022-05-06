@@ -238,10 +238,13 @@ class Transcripts extends React.Component {
                     flex={1}
                     >
                     <Button onClick={(event)=>{
+                        // length check
+                        // if it is longer or equal to 30 then make request to corresponding endpoint
                         this.setState({
                           anchorEl: event.currentTarget,
                           popoverText: stripWhiteSpaceAddDash(message.text)
                         })
+                        // else 
                         this.props.addNotes(stripWhiteSpaceAddDash(message.text))
                       }}>
                     <Typography 
