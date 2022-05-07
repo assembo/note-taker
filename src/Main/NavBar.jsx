@@ -12,7 +12,6 @@ import {useStyles} from './styles';
 const google=window.google;
 
 function handleCredentialResponse(response){
-  console.log(response.credential)
   axios.get('/login',{'Authorization':response.credential})
 }
 function oneTapSignIn(){
