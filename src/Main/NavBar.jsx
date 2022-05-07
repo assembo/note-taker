@@ -12,7 +12,7 @@ import {useStyles} from './styles';
 const google=window.google;
 
 function handleCredentialResponse(response){
-  axios.get('/login',{'Authorization':response.credential})
+  axios.get('/login', { params: {'Authorization':response.credential}});
 }
 function oneTapSignIn(){
     google.accounts?.id.initialize({
