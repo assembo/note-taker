@@ -159,7 +159,7 @@ class Transcripts extends React.Component {
         break;
     }
   }
-  
+  //The functions are associated with the popup function for the Transcript.
   handleClose=()=>
     this.setState({
       anchorEl: null})
@@ -170,6 +170,7 @@ class Transcripts extends React.Component {
  
 
   render() {
+    //Setting up the elements for the popup element for transcripts
     let openingPopup =Boolean(this.state.anchorEl)
     let id =openingPopup ? 'simple-popover' : undefined
     return (
