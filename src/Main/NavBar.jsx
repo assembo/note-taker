@@ -6,9 +6,8 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import axios from '../axios';
-import "./NavBar.css"
+import {useStyles} from './styles';
 
-console.log(process.env.REACT_APP_CLIENT_ID)
 //Error handling code in the case gscript doesn't load properly.
 const google=window.google;
 
@@ -28,17 +27,18 @@ function oneTapSignIn(){
   }
 
 export default function NavBar() {
+  const classes=useStyles()
   return (
     <Box sx={{ flexGrow: 1}}>
       <AppBar 
         sx={{bgcolor: "white"}}
-        style={ { boxShadow: "none", height:"30px"}}
+        className={classes.appBar}
         >
         <Toolbar>
           <IconButton>
-            <img src={logo} className="App-logo" alt="logo"/> 
+            <img src={logo} className={classes.AppLogo} alt="logo"/> 
           </IconButton>
-          <Button id="buttonDiv" className="login-Button" onClick={()=>oneTapSignIn()}>Login</Button>  
+          <Button id="buttonDiv" className={classes.loginButton} onClick={()=>oneTapSignIn()}>Login</Button>  
         </Toolbar>
       </AppBar>
     </Box>
