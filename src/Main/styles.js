@@ -5,9 +5,14 @@ export const useStyles = makeStyles({
    marginRight: '0%'
   },
   loginButton : {
-   marginLeft:'85%'
+   display: 'inline-block',
   },
   appBar:{
     height:"70px",
+    boxShadow: '0 0 0 0'
+  },
+  toolBar:{
+      display:'flex',
+      justifyContent: 'space-between',
   }
 });

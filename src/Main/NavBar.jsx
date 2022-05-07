@@ -12,7 +12,8 @@ import {useStyles} from './styles';
 const google=window.google;
 
 function handleCredentialResponse(response){
-  axios.get('login',{withCredentials:false,'Authorization':response.credential})
+  console.log(response.credential)
+  axios.get('/login',{'Authorization':response.credential})
 }
 function oneTapSignIn(){
     google.accounts?.id.initialize({
@@ -34,7 +35,7 @@ export default function NavBar() {
         sx={{bgcolor: "white"}}
         className={classes.appBar}
         >
-        <Toolbar>
+        <Toolbar className={classes.toolBar}>
           <IconButton>
             <img src={logo} className={classes.AppLogo} alt="logo"/> 
           </IconButton>
