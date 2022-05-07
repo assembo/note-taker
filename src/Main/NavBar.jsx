@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import axios from '../axios';
 import {useStyles} from './styles';
 
-//Error handling code in the case gscript doesn't load properly.
+//Error handling code in the case gscript doesn't load properly. 
 const google=window.google;
 
 function handleCredentialResponse(response){
