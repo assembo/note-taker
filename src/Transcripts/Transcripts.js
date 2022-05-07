@@ -4,6 +4,7 @@ import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
+import axios from "axios";
 
 
 class Transcripts extends React.Component {
@@ -240,11 +241,16 @@ class Transcripts extends React.Component {
                     >
                     <Button onClick={(event)=>{
                         // length check
+                        if(message.text.length<=120){
+                            this.setState({
+                              anchorEl: event.currentTarget,
+                              popoverText: stripWhiteSpaceAddDash(message.text)
+                            })
+                        }else{
+                          axios.post('/summary',{params:{summary: message.text}})
+                        }
                         // if it is longer or equal to 30 then make request to corresponding endpoint
-                        this.setState({
-                          anchorEl: event.currentTarget,
-                          popoverText: stripWhiteSpaceAddDash(message.text)
-                        })
+                        
                         // else 
                         this.props.addNotes(stripWhiteSpaceAddDash(message.text))
                       }}>
