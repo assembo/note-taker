@@ -13,7 +13,6 @@ export function BaseIconButton({ styleOverride, icon, callback }) {
   return (
     <Button
         id="contact-button"
-        className="contact-button"
         variant="contained"
         style={style}
         startIcon={ icon }
