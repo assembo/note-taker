@@ -4,7 +4,8 @@ import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
-
+import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class Transcripts extends React.Component {
       });
       this.recognition.stop();
       // process the transcript
-      this.processTranscripts();
+      // this.processTranscripts();
       return;
     }
     await this.setState({
@@ -152,14 +153,14 @@ class Transcripts extends React.Component {
         this.props.addNotes(assignText);
         break;
       case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
-        const newTranscript = [ { text: rawText, isNew: true }, ...this.state.transcripts];
+        const newTranscript = [ { text: rawText, isNew: true, addDirectly: false }, ...this.state.transcripts];
         this.setState({ transcripts: newTranscript });
         break;
       default:
         break;
     }
   }
-  
+  //The functions are associated with the popup function for the Transcript.
   handleClose=()=>
     this.setState({
       anchorEl: null})
@@ -170,6 +171,7 @@ class Transcripts extends React.Component {
  
 
   render() {
+    //Setting up the elements for the popup element for transcripts
     let openingPopup =Boolean(this.state.anchorEl)
     let id =openingPopup ? 'simple-popover' : undefined
     return (
@@ -233,19 +235,45 @@ class Transcripts extends React.Component {
               <>
                <div>
                   <Box 
-                  key={index} display={"flex"} marginBottom={3} aria-describedby={id} onClick={this.handleClick}>
+                  key={index} display={"flex"} marginBottom={3} aria-describedby={id} >
                   <Box 
                     flex={1}
                     >
-                    <Button onClick={(event)=>{
-                        // length check
-                        // if it is longer or equal to 30 then make request to corresponding endpoint
-                        this.setState({
-                          anchorEl: event.currentTarget,
-                          popoverText: stripWhiteSpaceAddDash(message.text)
-                        })
-                        // else 
-                        this.props.addNotes(stripWhiteSpaceAddDash(message.text))
+                    <Button onClick={async (event)=>{
+                      // TODO: change length to 30 words and move into constants
+                        if( 
+                          message.text.split(" ").length>=10
+                        ){
+                          // check if message should be added directly
+                          if (message.addDirectly) {
+                            this.props.addNotes(stripWhiteSpaceAddDash(message.text));
+                          } else {
+                            this.setState({
+                              anchorEl:event.currentTarget,
+                              popoverText:<CircularProgress/>
+                            });
+                            // temporarily comment out
+                            // let result=await axios.get('/summary',{params:{summary: message.text }});
+                            // this.setState({
+                            //     popoverText: result.data
+                            //   })
+                            const newTranscripts = this.state.transcripts.map( ( oldTranscript ) => {
+                              const newTranscript = oldTranscript.text !== message.text ? oldTranscript :
+                              { text: message.text, isNew: message.isNew, addDirectly: true };
+                              return newTranscript;
+                            })
+                            this.setState({
+                              popoverText: "yumo's simple test",
+                              transcripts: newTranscripts
+                            });
+                          }
+                          // TODO
+                          // 2. Modify the popover into a button to add content
+                        } else {
+                          // if it's shorter than 30 words
+                          this.props.addNotes(stripWhiteSpaceAddDash(message.text));
+                        }
+
                       }}>
                     <Typography 
                       style={{ 

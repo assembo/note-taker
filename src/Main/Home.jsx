@@ -5,6 +5,7 @@ import axios from '../axios';
 import SnackbarNotification from "../Notification/Notification";
 import { BaseIconButton } from "../BaseComponents/BaseIconButton";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import "./Home.css";
@@ -50,19 +51,19 @@ class Home extends React.Component {
                   note: `${this.state.note}\n${text}`
                 })
               }}
-              onClickGenerateButton={async ()=>{
-                const result = await axios.get("todo", {
-                  params: {
-                    text: this.state.note,
-                  },
-                })
-                this.setState({
-                  note: `${this.state.note}\n\nAction items:\n$${result.data}`,
-                  copied: false,
-                })
-                // const result = await axios.get("http://django-tutorial-app.us-west-2.elasticbeanstalk.com")
-                console.log(`onClickGenerateButton`, result);
-              }}
+              // onClickGenerateButton={async ()=>{
+              //   const result = await axios.get("todo", {
+              //     params: {
+              //       text: this.state.note,
+              //     },
+              //   })
+              //   this.setState({
+              //     note: `${this.state.note}\n\nAction items:\n$${result.data}`,
+              //     copied: false,
+              //   })
+              //   // const result = await axios.get("http://django-tutorial-app.us-west-2.elasticbeanstalk.com")
+              //   console.log(`onClickGenerateButton`, result);
+              // }}
             ></NotePanel>
           </div>
 
