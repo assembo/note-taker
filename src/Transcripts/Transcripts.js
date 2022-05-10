@@ -5,7 +5,7 @@ import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
 import axios from "axios";
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -56,7 +56,7 @@ class Transcripts extends React.Component {
       });
       this.recognition.stop();
       // process the transcript
-      this.processTranscripts();
+      // this.processTranscripts();
       return;
     }
     await this.setState({
@@ -235,24 +235,27 @@ class Transcripts extends React.Component {
               <>
                <div>
                   <Box 
-                  key={index} display={"flex"} marginBottom={3} aria-describedby={id} onClick={this.handleClick}>
+                  key={index} display={"flex"} marginBottom={3} aria-describedby={id} >
                   <Box 
                     flex={1}
                     >
-                    <Button onClick={(event)=>{
-                        // length check
-                        if(message.text.length<=120){
-                            this.setState({
-                              anchorEl: event.currentTarget,
-                              popoverText: stripWhiteSpaceAddDash(message.text)
+                    <Button onClick={async (event)=>{
+                        if(message.text.split(" ").length>=10){
+                          this.setState({
+                          anchorEl:event.currentTarget,
+                          popoverText:<CircularProgress/>
+                          })
+                          let result=await axios.get('/summary',{params:{summary: message.text }})
+                          console.log(result)
+                          this.setState({
+                              popoverText: result.data
                             })
-                        }else{
-                          axios.post('/summary',{params:{summary: message.text}})
                         }
                         // if it is longer or equal to 30 then make request to corresponding endpoint
                         
                         // else 
                         this.props.addNotes(stripWhiteSpaceAddDash(message.text))
+
                       }}>
                     <Typography 
                       style={{ 
