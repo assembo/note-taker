@@ -1,11 +1,12 @@
 import React from "react";
-import { Box, Button, Typography, Popover} from '@mui/material';
+import { Box, Button, Typography, Popper} from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
 import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
 import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
+import { TRANSCRIPT_SUMMARIZATION_WORD_COUNT } from "./constants";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -21,8 +22,10 @@ class Transcripts extends React.Component {
       ignoreOnend: null,
       voiceRecognitionAvailable: false,
       anchorEl: null,
-      popoverText: ""
+      popoverText: "",
+      loading: false
     };
+    window.axios = axios;
   }
 
   componentDidMount() {
@@ -161,14 +164,23 @@ class Transcripts extends React.Component {
     }
   }
   //The functions are associated with the popup function for the Transcript.
-  handleClose=()=>
+  handleClose = () => {
     this.setState({
-      anchorEl: null})
+      anchorEl: null
+    });
+  }
   
   handleClick = (event) => {
-    this.setState({anchorEl:event.currentTarget});
+    this.setState({ anchorEl:event.currentTarget });
   };
  
+  clearTranscripts = () => {
+    const newTranscripts = this.state.transcripts.map( ( oldTranscript ) => {
+      const newTranscript = { ...oldTranscript, addDirectly: false };
+      return newTranscript;
+    });
+    this.setState({ transcripts: newTranscripts });
+  };
 
   render() {
     //Setting up the elements for the popup element for transcripts
@@ -240,32 +252,39 @@ class Transcripts extends React.Component {
                     flex={1}
                     >
                     <Button onClick={async (event)=>{
+                      this.setState({ anchorEl: null });
                       // TODO: change length to 30 words and move into constants
                         if( 
-                          message.text.split(" ").length>=10
+                          message.text.split(" ").length >= TRANSCRIPT_SUMMARIZATION_WORD_COUNT
                         ){
                           // check if message should be added directly
                           if (message.addDirectly) {
                             this.props.addNotes(stripWhiteSpaceAddDash(message.text));
+                            this.clearTranscripts();
+                            // clear all messages
                           } else {
                             this.setState({
                               anchorEl:event.currentTarget,
-                              popoverText:<CircularProgress/>
+                              loading: true
                             });
                             // temporarily comment out
-                            // let result=await axios.get('/summary',{params:{summary: message.text }});
-                            // this.setState({
-                            //     popoverText: result.data
-                            //   })
+                            let summary;
+                            if (message.summary) {
+                              summary = message.summary;
+                            } else {
+                              const result = await axios.get('/generateSummarization',{ params:{ text: message.text }});
+                              summary = result.data;
+                            }
+                            this.setState({
+                              popoverText: summary,
+                              loading: false
+                            });
                             const newTranscripts = this.state.transcripts.map( ( oldTranscript ) => {
                               const newTranscript = oldTranscript.text !== message.text ? oldTranscript :
-                              { text: message.text, isNew: message.isNew, addDirectly: true };
+                              { text: message.text, isNew: message.isNew, summary, addDirectly: true };
                               return newTranscript;
-                            })
-                            this.setState({
-                              popoverText: "yumo's simple test",
-                              transcripts: newTranscripts
                             });
+                            this.setState({ transcripts: newTranscripts });
                           }
                           // TODO
                           // 2. Modify the popover into a button to add content
@@ -290,7 +309,7 @@ class Transcripts extends React.Component {
           })
         }
         </Box>
-        <Popover
+        <Popper
             id={id}
             open={openingPopup}
             anchorEl={this.state.anchorEl}
@@ -300,8 +319,23 @@ class Transcripts extends React.Component {
               horizontal: 'left',
             }}
           >
-            <Typography  sx={{ p:2 }}>{this.state.popoverText}</Typography>
-        </Popover>
+            <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>
+              { this.state.loading ? <CircularProgress /> : 
+                <Button
+                  onClick={()=>{ 
+                    this.props.addNotes(stripWhiteSpaceAddDash(this.state.popoverText));
+                    this.setState({
+                      anchorEl: null
+                    });
+                    this.clearTranscripts();
+                  }
+                  }
+                >
+                  <Typography  sx={{ p:2 }}>{this.state.popoverText}</Typography>
+                </Button>
+              }
+            </Box>
+        </Popper>
 
       </div>
       </div>
