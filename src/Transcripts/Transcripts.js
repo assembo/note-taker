@@ -286,8 +286,6 @@ class Transcripts extends React.Component {
                             });
                             this.setState({ transcripts: newTranscripts });
                           }
-                          // TODO
-                          // 2. Modify the popover into a button to add content
                         } else {
                           // if it's shorter than 30 words
                           this.props.addNotes(stripWhiteSpaceAddDash(message.text));
