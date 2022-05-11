@@ -1,10 +1,12 @@
 import React from "react";
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, Popper} from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
-import { preprocessText, stripWhiteSpaceAddDash, stripWhiteSpace } from "./helpers";
-import "./Transcripts.css";
+import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
+import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+import { TRANSCRIPT_SUMMARIZATION_WORD_COUNT } from "./constants";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -19,7 +21,11 @@ class Transcripts extends React.Component {
       finalTranscript: null,
       ignoreOnend: null,
       voiceRecognitionAvailable: false,
+      anchorEl: null,
+      popoverText: "",
+      loading: false
     };
+    window.axios = axios;
   }
 
   componentDidMount() {
@@ -53,7 +59,7 @@ class Transcripts extends React.Component {
       });
       this.recognition.stop();
       // process the transcript
-      this.processTranscripts();
+      // this.processTranscripts();
       return;
     }
     await this.setState({
@@ -150,22 +156,36 @@ class Transcripts extends React.Component {
         this.props.addNotes(assignText);
         break;
       case ASSEMBO_NOTE_TAKER_COMMANDS.ADD_TRANSCRIPT:
-        const newTranscript = [ { text: rawText, isNew: true }, ...this.state.transcripts];
+        const newTranscript = [ { text: rawText, isNew: true, addDirectly: false }, ...this.state.transcripts];
         this.setState({ transcripts: newTranscript });
         break;
       default:
         break;
     }
   }
+  //The functions are associated with the popup function for the Transcript.
+  handleClose = () => {
+    this.setState({
+      anchorEl: null
+    });
+  }
+  
+  handleClick = (event) => {
+    this.setState({ anchorEl:event.currentTarget });
+  };
+ 
+  clearTranscripts = () => {
+    const newTranscripts = this.state.transcripts.map( ( oldTranscript ) => {
+      const newTranscript = { ...oldTranscript, addDirectly: false };
+      return newTranscript;
+    });
+    this.setState({ transcripts: newTranscripts });
+  };
 
   render() {
-    // process interim result from webspeechkit
-    const rawInterimText = this.state.interimBox ? this.state.interimBox : "";
-    const interimText = stripWhiteSpace(rawInterimText);
-    const finalInterimText = interimText.length ? 
-      `${interimText[0].toUpperCase()}${interimText.substring(1)}` :
-      "";
-
+    //Setting up the elements for the popup element for transcripts
+    let openingPopup =Boolean(this.state.anchorEl)
+    let id =openingPopup ? 'simple-popover' : undefined
     return (
       <div className="containershadow" 
         style={{
@@ -226,21 +246,97 @@ class Transcripts extends React.Component {
             let text = stripWhiteSpace(message.text);
             const messageText = `${text[0].toUpperCase()}${text.substring(1)}`;
             return (
-              <Box 
-                key={index} display={"flex"} marginBottom={3}>
-                <Box 
-                  flex={1}
-                  >
-                  <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(messageText))}}>
-                  <Typography 
-                    className="assembo-transcript__typograph">{messageText}</Typography>
-                  </Button>
+              <>
+               <div>
+                  <Box 
+                  key={index} display={"flex"} marginBottom={3} aria-describedby={id} >
+                  <Box 
+                    flex={1}
+                    >
+                    <Button onClick={async (event)=>{
+                      this.setState({ anchorEl: null });
+                      // TODO: change length to 30 words and move into constants
+                        if( 
+                          message.text.split(" ").length >= TRANSCRIPT_SUMMARIZATION_WORD_COUNT
+                        ){
+                          // check if message should be added directly
+                          if (message.addDirectly) {
+                            this.props.addNotes(stripWhiteSpaceAddDash(message.text));
+                            this.clearTranscripts();
+                            // clear all messages
+                          } else {
+                            this.setState({
+                              anchorEl:event.currentTarget,
+                              loading: true
+                            });
+                            // temporarily comment out
+                            let summary;
+                            if (message.summary) {
+                              summary = message.summary;
+                            } else {
+                              const result = await axios.get('/generateSummarization',{ params:{ text: message.text }});
+                              summary = result.data;
+                            }
+                            this.setState({
+                              popoverText: summary,
+                              loading: false
+                            });
+                            const newTranscripts = this.state.transcripts.map( ( oldTranscript ) => {
+                              const newTranscript = oldTranscript.text !== message.text ? oldTranscript :
+                              { text: message.text, isNew: message.isNew, summary, addDirectly: true };
+                              return newTranscript;
+                            });
+                            this.setState({ transcripts: newTranscripts });
+                          }
+                        } else {
+                          // if it's shorter than 30 words
+                          this.props.addNotes(stripWhiteSpaceAddDash(message.text));
+                        }
+
+                      }}>
+                    <Typography 
+                      style={{ 
+                        overflow:"hidden",
+                        textAlign: "left"
+                      }} >{message.text}</Typography>
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
+              </div>
+              </>
+              
             )
           })
         }
         </Box>
+        <Popper
+            id={id}
+            open={openingPopup}
+            anchorEl={this.state.anchorEl}
+            onClose={this.handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>
+              { this.state.loading ? <CircularProgress /> : 
+                <Button
+                  onClick={()=>{ 
+                    this.props.addNotes(stripWhiteSpaceAddDash(this.state.popoverText));
+                    this.setState({
+                      anchorEl: null
+                    });
+                    this.clearTranscripts();
+                  }
+                  }
+                >
+                  <Typography  sx={{ p:2 }}>{this.state.popoverText}</Typography>
+                </Button>
+              }
+            </Box>
+        </Popper>
+
       </div>
       </div>
     );
