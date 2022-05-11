@@ -201,6 +201,8 @@ class Transcripts extends React.Component {
         }}
       >
         <Button
+          id="transcript__mic-toggle-button"
+          className="transcript__mic-toggle"
           variant="contained"
           style={{
             borderRadius: 45,
@@ -233,16 +235,16 @@ class Transcripts extends React.Component {
           <Box display={"flex"} marginBottom={3}>
             <Box flex={1}>
               <Button onClick={()=>{}}>
-              <Typography style={{
-                overflow: "hidden",
-                textAlign: "left"
-                }} >{this.state.interimBox}</Typography>
+              <Typography className="assembo-transcript__typograph">{`${finalInterimText}`}</Typography>
               </Button>
             </Box>
           </Box>
         }
         {
           this.state.transcripts.map((message, index) => {
+            // process message text so that each sentence start with a captalized letter
+            let text = stripWhiteSpace(message.text);
+            const messageText = `${text[0].toUpperCase()}${text.substring(1)}`;
             return (
               <>
                <div>

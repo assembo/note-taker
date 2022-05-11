@@ -78,7 +78,7 @@ class NotePanel extends React.Component {
                 confirmButtonColor: ASSEMBO_COLORS.primary,
                 confirmButtonText: "SEND",
                 borderRadius: "25px"
-              })
+              });
               
               if (email) {
                 Swal.fire({
