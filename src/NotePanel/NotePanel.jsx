@@ -96,6 +96,27 @@ class NotePanel extends React.Component {
               }
             }}
         >Send to email</Button>
+        <Button
+            className="NotePanel__add_to_slack"
+            variant="contained"
+            fullWidth
+            style={{
+              borderRadius: '20px',
+              fontWeight: 'bolder',
+              padding: '10px',
+              marginRight: '5px',
+              marginLeft: '5px',
+              marginTop: '20px',
+              marginBottom: '5px',
+              color: '#45d8d8',
+              background: 'white',
+              boxShadow: '1 1 1 1',
+            }}
+            onClick={ () => {window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write&user_scope=channels:read,chat:write"
+          }}
+          >
+            Add to Slack
+          </Button>
         </div>
       </div>
     );
