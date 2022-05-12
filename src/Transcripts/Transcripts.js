@@ -316,8 +316,8 @@ class Transcripts extends React.Component {
                 horizontal: 'left',
               }}
             >
-              <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>
-                { this.state.loading ? <CircularProgress /> : 
+              <Box sx={{ border: 0, p: 1, boxShadow: 1, borderRadius: '16px', width:"250px", bgcolor: 'background.paper' }}>
+                { this.state.loading ? <p><CircularProgress/>Action Item Suggestion</p> : 
                   <Button
                     onClick={()=>{ 
                       this.props.addNotes(stripWhiteSpaceAddDash(this.state.popoverText));
