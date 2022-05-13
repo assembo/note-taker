@@ -112,7 +112,7 @@ class NotePanel extends React.Component {
               background: 'white',
               boxShadow: '1 1 1 1',
             }}
-            onClick={ () => {window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write&user_scope=channels:read,chat:write"
+            onClick={ () => {window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook&user_scope=channels:read,chat:write,identify"
           }}
           >
             Add to Slack
