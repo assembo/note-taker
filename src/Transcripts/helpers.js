@@ -62,7 +62,6 @@ export const stripWhiteSpaceAddDash = (rawText) => {
  */
  export const stripWhiteSpace = (rawText) => {
   const stripped = rawText.trim();
-  console.log("stripped", stripped);
   return stripped
 }
 

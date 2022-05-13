@@ -1,5 +1,5 @@
 .assembo-transcript__typograph {
   overflow: hidden;
   text-align: left;
-  text-transform: none;
+  text-transform: none !important;
 };
