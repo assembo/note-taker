@@ -316,7 +316,7 @@ class Transcripts extends React.Component {
                 horizontal: 'left',
               }}
             >
-              <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>
+              <Box sx={{ border: 1, p: 1, borderRadius: "16px", width: "300px",bgcolor: 'background.paper' }}>
                 { this.state.loading ? <CircularProgress /> : 
                   <Button
                     onClick={()=>{ 
@@ -328,7 +328,7 @@ class Transcripts extends React.Component {
                     }
                     }
                   >
-                    <Typography  sx={{ p:2 }}>{this.state.popoverText}</Typography>
+                    <Typography  sx={{ p:2 }}>Suggested Action Items:<br/>{this.state.popoverText}</Typography>
                   </Button>
                 }
               </Box>
