@@ -15,18 +15,7 @@ class NotePanel extends React.Component {
     return (
       <div className="containershadow">
         <TextField
-          style={{textAlign: 'left',
-          width:"100%"
-        }}
-        sx={{
-          width: { sm: 0, md: 0 },
-          "& .MuiOutlinedInput-root:hover": {
-            "& > fieldset": {
-              borderColor: "white"
-            }
-          }
-        }}
-        variant="outlined"
+          className="note-panel__textarea"
           value={this.props.note}
           multiline
           rows={20}
@@ -75,9 +64,11 @@ class NotePanel extends React.Component {
             onClick={ async()=>{
               const { value: email } = await Swal.fire({
                 title: 'Send notes to email',
-                html: `<input name="email" class="swal2-input" placeholder="Enter your email address" type="email" style="display: flex;">`,
+                input: 'email',
+                inputPlaceholder: 'Enter your email address',
                 confirmButtonColor: ASSEMBO_COLORS.primary,
                 confirmButtonText: "SEND",
+                borderRadius: "25px"
               });
               
               if (email) {
