@@ -10,13 +10,14 @@ import {useStyles} from './styles';
 
 //Error handling code in the case gscript doesn't load properly. 
 const google=window.google;
+const REACT_APP_CLIENT_ID = "6477792390-o5ibvubommbu11vhlglimjc0tor67reb.apps.googleusercontent.com"
 
 function handleCredentialResponse(response){
   axios.get('/login', { params: {'Authorization':response.credential}});
 }
 function oneTapSignIn(){
     google.accounts?.id.initialize({
-          client_id: process.env.REACT_APP_CLIENT_ID,
+          client_id: REACT_APP_CLIENT_ID,
           callback: handleCredentialResponse
           });
     google.accounts?.id.renderButton(
