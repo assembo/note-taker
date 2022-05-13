@@ -3,7 +3,8 @@ import { Box, Button, Typography } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
-import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
+import { preprocessText, stripWhiteSpaceAddDash, stripWhiteSpace } from "./helpers";
+import "./Transcripts.css";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -158,6 +159,13 @@ class Transcripts extends React.Component {
   }
 
   render() {
+    // process interim result from webspeechkit
+    const rawInterimText = this.state.interimBox ? this.state.interimBox : "";
+    const interimText = stripWhiteSpace(rawInterimText);
+    const finalInterimText = interimText.length ? 
+      `${interimText[0].toUpperCase()}${interimText.substring(1)}` :
+      "";
+
     return (
       <div className="containershadow" 
         style={{
@@ -206,28 +214,25 @@ class Transcripts extends React.Component {
           <Box display={"flex"} marginBottom={3}>
             <Box flex={1}>
               <Button onClick={()=>{}}>
-              <Typography style={{
-                overflow: "hidden",
-                textAlign: "left"
-                }} >{this.state.interimBox}</Typography>
+              <Typography className="assembo-transcript__typograph">{`${finalInterimText}`}</Typography>
               </Button>
             </Box>
           </Box>
         }
         {
           this.state.transcripts.map((message, index) => {
+            // process message text so that each sentence start with a captalized letter
+            let text = stripWhiteSpace(message.text);
+            const messageText = `${text[0].toUpperCase()}${text.substring(1)}`;
             return (
               <Box 
                 key={index} display={"flex"} marginBottom={3}>
                 <Box 
                   flex={1}
                   >
-                  <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(message.text))}}>
+                  <Button onClick={()=>{this.props.addNotes(stripWhiteSpaceAddDash(messageText))}}>
                   <Typography 
-                    style={{ 
-                      overflow:"hidden",
-                      textAlign: "left"
-                    }} >{message.text}</Typography>
+                    className="assembo-transcript__typograph">{messageText}</Typography>
                   </Button>
                 </Box>
               </Box>
