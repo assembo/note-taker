@@ -51,19 +51,17 @@ class Home extends React.Component {
                   note: `${this.state.note}\n${text}`
                 })
               }}
-              // onClickGenerateButton={async ()=>{
-              //   const result = await axios.get("todo", {
-              //     params: {
-              //       text: this.state.note,
-              //     },
-              //   })
-              //   this.setState({
-              //     note: `${this.state.note}\n\nAction items:\n$${result.data}`,
-              //     copied: false,
-              //   })
-              //   // const result = await axios.get("http://django-tutorial-app.us-west-2.elasticbeanstalk.com")
-              //   console.log(`onClickGenerateButton`, result);
-              // }}
+              onClickGenerateButton={async ()=>{
+                const result = await axios.get("yumo/note-taker-transcript", {
+                  params: {
+                    text: this.state.note,
+                  },
+                });
+                this.setState({
+                  note: `${this.state.note}\n\nAction items:\n$${result.data}`,
+                  copied: false,
+                });
+              }}
             ></NotePanel>
           </div>
 
@@ -80,7 +78,7 @@ class Home extends React.Component {
               if (!text){
                 return
               }
-              const result = await axios.get("todo", {
+              const result = await axios.get("yumo/note-taker-transcript", {
                 params: {
                   text: text,
                 },

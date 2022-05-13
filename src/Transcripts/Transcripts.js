@@ -252,7 +252,6 @@ class Transcripts extends React.Component {
                       >
                       <Button onClick={async (event)=>{
                         this.setState({ anchorEl: null });
-                        // TODO: change length to 30 words and move into constants
                           if( 
                             message.text.split(" ").length >= TRANSCRIPT_SUMMARIZATION_WORD_COUNT
                           ){
