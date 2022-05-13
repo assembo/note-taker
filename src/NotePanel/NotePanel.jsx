@@ -15,18 +15,7 @@ class NotePanel extends React.Component {
     return (
       <div className="containershadow">
         <TextField
-          style={{textAlign: 'left',
-          width:"100%"
-        }}
-        sx={{
-          width: { sm: 0, md: 0 },
-          "& .MuiOutlinedInput-root:hover": {
-            "& > fieldset": {
-              borderColor: "white"
-            }
-          }
-        }}
-        variant="outlined"
+          className="note-panel__textarea"
           value={this.props.note}
           multiline
           rows={20}
