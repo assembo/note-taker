@@ -3,10 +3,11 @@ import { Box, Button, Typography, Popper} from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import { ASSEMBO_COLORS, ASSEMBO_NOTE_TAKER_COMMANDS } from "../constants";
-import { preprocessText, stripWhiteSpaceAddDash } from "./helpers";
+import { preprocessText, stripWhiteSpaceAddDash, stripWhiteSpace } from "./helpers";
 import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
 import { TRANSCRIPT_SUMMARIZATION_WORD_COUNT } from "./constants";
+import "./Transcripts.css";
 
 class Transcripts extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Transcripts extends React.Component {
       popoverText: "",
       loading: false
     };
-    window.axios = axios;
+    window.transcripts = this;
   }
 
   componentDidMount() {
@@ -183,6 +184,13 @@ class Transcripts extends React.Component {
   };
 
   render() {
+    // process interim result from webspeechkit
+    const rawInterimText = this.state.interimBox ? this.state.interimBox : "";
+    const interimText = stripWhiteSpace(rawInterimText);
+    const finalInterimText = interimText.length ? 
+      `${interimText[0].toUpperCase()}${interimText.substring(1)}` :
+      "";
+
     //Setting up the elements for the popup element for transcripts
     let openingPopup =Boolean(this.state.anchorEl)
     let id =openingPopup ? 'simple-popover' : undefined
@@ -201,6 +209,8 @@ class Transcripts extends React.Component {
           }}
         >
           <Button
+            id="transcript__mic-toggle-button"
+            className="transcript__mic-toggle"
             variant="contained"
             style={{
               borderRadius: 45,
@@ -232,16 +242,15 @@ class Transcripts extends React.Component {
             <Box display={"flex"} marginBottom={3}>
               <Box flex={1}>
                 <Button onClick={()=>{}}>
-                <Typography style={{
-                  overflow: "hidden",
-                  textAlign: "left"
-                  }} >{this.state.interimBox}</Typography>
+                  <Typography className="assembo-transcript__typograph">{`${finalInterimText}`}</Typography>
                 </Button>
               </Box>
             </Box>
           }
           {
             this.state.transcripts.map((message, index) => {
+              let text = stripWhiteSpace(message.text);
+              const messageText = `${text[0].toUpperCase()}${text.substring(1)}`;
               return (
                 <>
                 <div>
@@ -257,7 +266,7 @@ class Transcripts extends React.Component {
                           ){
                             // check if message should be added directly
                             if (message.addDirectly) {
-                              this.props.addNotes(stripWhiteSpaceAddDash(message.text));
+                              this.props.addNotes(stripWhiteSpaceAddDash(messageText));
                               this.clearTranscripts();
                               // clear all messages
                             } else {
@@ -290,11 +299,7 @@ class Transcripts extends React.Component {
                           }
 
                         }}>
-                      <Typography 
-                        style={{ 
-                          overflow:"hidden",
-                          textAlign: "left"
-                        }} >{message.text}</Typography>
+                      <Typography className="assembo-transcript__typograph">{messageText}</Typography>
                       </Button>
                     </Box>
                   </Box>
@@ -327,7 +332,7 @@ class Transcripts extends React.Component {
                     }
                     }
                   >
-                    <Typography  sx={{ p:2 }}>{this.state.popoverText}</Typography>
+                    <Typography className="assembo-transcript__typograph" sx={{ p:2 }}>{this.state.popoverText}</Typography>
                   </Button>
                 }
               </Box>
