@@ -181,7 +181,6 @@ class Transcripts extends React.Component {
         }}
       >
         <Button
-          id="transcript__mic-toggle-button"
           className="transcript__mic-toggle"
           variant="contained"
           style={{
