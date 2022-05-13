@@ -12,6 +12,7 @@ export function BaseIconButton({ styleOverride, icon, callback }) {
   Object.assign(style, styleOverride);
   return (
     <Button
+        id="contact-button"
         variant="contained"
         style={style}
         startIcon={ icon }

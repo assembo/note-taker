@@ -15,18 +15,7 @@ class NotePanel extends React.Component {
     return (
       <div className="containershadow">
         <TextField
-          style={{textAlign: 'left',
-          width:"100%"
-        }}
-        sx={{
-          width: { sm: 0, md: 0 },
-          "& .MuiOutlinedInput-root:hover": {
-            "& > fieldset": {
-              borderColor: "white"
-            }
-          }
-        }}
-        variant="outlined"
+          className="note-panel__textarea"
           value={this.props.note}
           multiline
           rows={20}
@@ -37,6 +26,7 @@ class NotePanel extends React.Component {
         <CopyToClipboard text={this.props.note}
             onCopy={() => this.setState({copied: true})}>
             <Button
+              className="NotePanel__copy-button"
               variant="contained"
               fullWidth
               style={{
@@ -56,6 +46,7 @@ class NotePanel extends React.Component {
             </Button>
         </CopyToClipboard>
         <Button
+            className="NotePanel__send-email-button"
             variant="contained"
             fullWidth
             style={{
@@ -78,7 +69,7 @@ class NotePanel extends React.Component {
                 confirmButtonColor: ASSEMBO_COLORS.primary,
                 confirmButtonText: "SEND",
                 borderRadius: "25px"
-              })
+              });
               
               if (email) {
                 Swal.fire({
