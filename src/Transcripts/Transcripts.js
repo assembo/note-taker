@@ -332,11 +332,7 @@ class Transcripts extends React.Component {
                     }
                     }
                   >
-<<<<<<< HEAD
-                    <Typography  sx={{ p:2 }}>Suggested Action Items:<br/>{this.state.popoverText}</Typography>
-=======
                     <Typography className="assembo-transcript__typograph" sx={{ p:2 }}>{this.state.popoverText}</Typography>
->>>>>>> e75cd3be96446af2c4a25ee0bbbd08f21f4783ad
                   </Button>
                 }
               </Box>
