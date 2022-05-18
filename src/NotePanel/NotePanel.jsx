@@ -108,16 +108,17 @@ class NotePanel extends React.Component {
               boxShadow: '1 1 1 1',
             }}
             onClick={ async () => {
-              window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
+              // window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
               await axios.get("slack_user_token",
               {
                 params: {
                   code : window.location.search.slice(1).split("&")[0].split("=")[1]
                 }
                 })
+              this.setState({added: true})
           }}
           >
-            Add to Slack
+            {this.state.added ? "Send to Slack" : "Add to Slack"}
           </Button>
         </div>
       </div>
