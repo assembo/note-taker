@@ -44,8 +44,24 @@ export const preprocessText = (rawText) => {
   }
 };
 
+/**
+ * remove white space and add a dash in the front of the text
+ * @param {*} rawText 
+ * @returns modified text with white space removed and dash added
+ */
 export const stripWhiteSpaceAddDash = (rawText) => {
-  const stripped = rawText.trim();
+  const stripped = stripWhiteSpace(rawText)
   const formattedText = `- ${stripped}`;
   return formattedText
 }
+
+/**
+ * remove white space
+ * @param {*} rawText 
+ * @returns modified text with white space removed
+ */
+ export const stripWhiteSpace = (rawText) => {
+  const stripped = rawText.trim();
+  return stripped
+}
+

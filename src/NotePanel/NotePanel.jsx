@@ -15,18 +15,7 @@ class NotePanel extends React.Component {
     return (
       <div className="containershadow">
         <TextField
-          style={{textAlign: 'left',
-          width:"100%"
-        }}
-        sx={{
-          width: { sm: 0, md: 0 },
-          "& .MuiOutlinedInput-root:hover": {
-            "& > fieldset": {
-              borderColor: "white"
-            }
-          }
-        }}
-        variant="outlined"
+          className="note-panel__textarea"
           value={this.props.note}
           multiline
           rows={20}
@@ -37,6 +26,7 @@ class NotePanel extends React.Component {
         <CopyToClipboard text={this.props.note}
             onCopy={() => this.setState({copied: true})}>
             <Button
+              className="NotePanel__copy-button"
               variant="contained"
               fullWidth
               style={{
@@ -56,6 +46,7 @@ class NotePanel extends React.Component {
             </Button>
         </CopyToClipboard>
         <Button
+            className="NotePanel__send-email-button"
             variant="contained"
             fullWidth
             style={{
@@ -75,10 +66,14 @@ class NotePanel extends React.Component {
                 title: 'Send notes to email',
                 input: 'email',
                 inputPlaceholder: 'Enter your email address',
+                inputAttributes: {
+                  name: "email",
+                  autocomplete: "email"
+                },
                 confirmButtonColor: ASSEMBO_COLORS.primary,
                 confirmButtonText: "SEND",
                 borderRadius: "25px"
-              })
+              });
               
               if (email) {
                 Swal.fire({
@@ -96,6 +91,35 @@ class NotePanel extends React.Component {
               }
             }}
         >Send to email</Button>
+        <Button
+            className="NotePanel__add_to_slack"
+            variant="contained"
+            fullWidth
+            style={{
+              borderRadius: '20px',
+              fontWeight: 'bolder',
+              padding: '10px',
+              marginRight: '5px',
+              marginLeft: '5px',
+              marginTop: '20px',
+              marginBottom: '5px',
+              color: '#45d8d8',
+              background: 'white',
+              boxShadow: '1 1 1 1',
+            }}
+            onClick={ async () => {
+              window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
+              await axios.get("slack_user_token",
+              {
+                params: {
+                  code : window.location.search.slice(1).split("&")[0].split("=")[1]
+                }
+                })
+              this.setState({added: true})
+          }}
+          >
+            {this.state.added ? "Send to Slack" : "Add to Slack"}
+          </Button>
         </div>
       </div>
     );
