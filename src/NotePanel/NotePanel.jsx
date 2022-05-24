@@ -118,7 +118,7 @@ class NotePanel extends React.Component {
                 })
           }}
           >
-            {this.state.added ? "Send to Slack" : "Add to Slack"}
+            Add to Slack
           </Button>
           <Button
             className="NotePanel__add_to_slack"
