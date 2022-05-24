@@ -142,7 +142,11 @@ class NotePanel extends React.Component {
                 params: {
                   notes : this.props.note
                 }
-                })
+                });
+                Swal.fire({
+                  title:`Assembo's notes sent to Slack`,
+                  confirmButtonColor: ASSEMBO_COLORS.primary}
+                );
               }}
             >
             Send to Slack
