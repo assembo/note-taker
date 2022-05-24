@@ -9,7 +9,7 @@ import './NotePanel.css';
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { added: false};
   }
   render() {
     return (
@@ -107,19 +107,46 @@ class NotePanel extends React.Component {
               background: 'white',
               boxShadow: '1 1 1 1',
             }}
-            onClick={ async () => {
-              window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
+            onClick={ () => {window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
+            this.setState({added: true})}}
+            callback={ async () => {
               await axios.get("slack_user_token",
               {
                 params: {
                   code : window.location.search.slice(1).split("&")[0].split("=")[1]
                 }
                 })
-              this.setState({added: true})
           }}
           >
             {this.state.added ? "Send to Slack" : "Add to Slack"}
           </Button>
+          <Button
+            className="NotePanel__add_to_slack"
+            variant="contained"
+            fullWidth
+            style={{
+              borderRadius: '20px',
+              fontWeight: 'bolder',
+              padding: '10px',
+              marginRight: '5px',
+              marginLeft: '5px',
+              marginTop: '20px',
+              marginBottom: '5px',
+              color: '#45d8d8',
+              background: 'white',
+              boxShadow: '1 1 1 1',
+            }}
+            onClick={ async () => {
+              await axios.get("send_message",
+              {
+                params: {
+                  notes : this.props.note
+                }
+                })
+              }}
+            >
+            Send to Slack
+            </Button>
         </div>
       </div>
     );
