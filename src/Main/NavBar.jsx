@@ -17,6 +17,7 @@ async function handleCredentialResponse(response){
   try {
     const result = await axios.get('/login', { params: { 'Authorization': response.credential }});
     const user = result.data;
+
     const userID = user._id.$oid;
     if (userID) {
       localStorage.setItem("ASSEMBO_USER_ID", userID);
@@ -73,6 +74,7 @@ export default function NavBar({ user, setUser }) {
                   });
                   if (value) {
                     setUser(null);
+                    localStorage.removeItem("ASSEMBO_USER_ID");
                   }
                 } }
               >
