@@ -9,7 +9,16 @@ import './NotePanel.css';
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { added: false};
+    this.state = { added: false };
+  }
+
+  async componentDidMount() {
+    const code = window.location.search.slice(1).split("&")[0].split("=")[1];
+    if (code) {
+      await axios.get("slack_user_token", { params: { code } });
+    }
+    // TODO: we have to deal with this in another way
+    this.setState({added: true})
   }
   render() {
     return (
@@ -46,21 +55,9 @@ class NotePanel extends React.Component {
             </Button>
         </CopyToClipboard>
         <Button
-            className="NotePanel__send-email-button"
+            className="notePanel__send-email-button notePanel__button"
             variant="contained"
             fullWidth
-            style={{
-              borderRadius: '20px',
-              fontWeight: 'bolder',
-              padding: '10px',
-              marginRight: '5px',
-              marginLeft: '5px',
-              marginTop: '20px',
-              marginBottom: '5px',
-              color: '#45d8d8',
-              background: 'white',
-              boxShadow: '1 1 1 1',
-            }}
             onClick={ async()=>{
               const { value: email } = await Swal.fire({
                 title: 'Send notes to email',
@@ -86,56 +83,29 @@ class NotePanel extends React.Component {
                     toEmail: email,
                     notes: this.props.note
                   }
-                  
                 });                
               }
             }}
         >Send to email</Button>
-        <Button
-            className="NotePanel__add_to_slack"
+        {
+          this.state.added &&
+          <Button
+            className="notePanel__add_to_slack notePanel__button"
             variant="contained"
             fullWidth
-            style={{
-              borderRadius: '20px',
-              fontWeight: 'bolder',
-              padding: '10px',
-              marginRight: '5px',
-              marginLeft: '5px',
-              marginTop: '20px',
-              marginBottom: '5px',
-              color: '#45d8d8',
-              background: 'white',
-              boxShadow: '1 1 1 1',
+            onClick={ () => {
+              window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
             }}
-            onClick={ () => {window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
-            this.setState({added: true})}}
-            callback={ async () => {
-              await axios.get("slack_user_token",
-              {
-                params: {
-                  code : window.location.search.slice(1).split("&")[0].split("=")[1]
-                }
-                })
-          }}
           >
             Add to Slack
           </Button>
+        }
+        {
+          this.state.added && 
           <Button
-            className="NotePanel__add_to_slack"
+            className="notePanel__add_to_slack notePanel__button"
             variant="contained"
             fullWidth
-            style={{
-              borderRadius: '20px',
-              fontWeight: 'bolder',
-              padding: '10px',
-              marginRight: '5px',
-              marginLeft: '5px',
-              marginTop: '20px',
-              marginBottom: '5px',
-              color: '#45d8d8',
-              background: 'white',
-              boxShadow: '1 1 1 1',
-            }}
             onClick={ async () => {
               await axios.get("send_message",
               {
@@ -150,7 +120,8 @@ class NotePanel extends React.Component {
               }}
             >
             Send to Slack
-            </Button>
+          </Button>
+        }
         </div>
       </div>
     );
