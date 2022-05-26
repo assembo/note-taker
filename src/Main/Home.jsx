@@ -31,7 +31,6 @@ class Home extends React.Component {
   }
 
   render() {
-
     return (
       <div>
         <div         
@@ -44,6 +43,7 @@ class Home extends React.Component {
           <div type="note" id="note">
             <NotePanel
               note={this.state.note}
+              user={this.props.user}
               setNotes={(e)=>{this.handleTextInputChange(e)}} 
               addNotes={(text)=>{
                 this.setState({

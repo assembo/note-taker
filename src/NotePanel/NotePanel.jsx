@@ -9,16 +9,25 @@ import './NotePanel.css';
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { added: false };
+    this.state = { slackIntegrated: false };
+    window.notePad = this;
   }
 
   async componentDidMount() {
+    const userID = this.props.user && this.props.user._id ?
+      this.props.user._id.$oid :
+      null
     const code = window.location.search.slice(1).split("&")[0].split("=")[1];
-    if (code) {
-      await axios.get("slack_user_token", { params: { code } });
+    if (code && userID) {
+      await axios.get("slack_user_token", { params: { code, userID } });
     }
-    // TODO: we have to deal with this in another way
-    this.setState({added: true})
+    const slackIntegration = this.props.user && this.props.user.slackIntegration ?
+      this.props.user.slackIntegration :
+      null;
+    if (slackIntegration) {
+      // TODO: we have to deal with this in another way
+      this.setState({ slackIntegrated: true})
+    }
   }
   render() {
     return (
@@ -88,7 +97,7 @@ class NotePanel extends React.Component {
             }}
         >Send to email</Button>
         {
-          this.state.added &&
+          this.state.user &&
           <Button
             className="notePanel__add_to_slack notePanel__button"
             variant="contained"
@@ -101,7 +110,7 @@ class NotePanel extends React.Component {
           </Button>
         }
         {
-          this.state.added && 
+          this.state.slackIntegrated && 
           <Button
             className="notePanel__add_to_slack notePanel__button"
             variant="contained"
@@ -110,7 +119,8 @@ class NotePanel extends React.Component {
               await axios.get("send_message",
               {
                 params: {
-                  notes : this.props.note
+                  notes: this.props.note,
+                  slackBotToken: this.props.user.slackIntegration["bot_access_token"]
                 }
                 });
                 Swal.fire({
