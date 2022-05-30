@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, TextField } from '@mui/material';
-import { ASSEMBO_COLORS } from "../constants";
+import { ASSEMBO_COLORS, SLACK_APP_TOKEN_ENDPOINT } from "../constants";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Swal from 'sweetalert2';
 import axios from '../axios';
@@ -12,7 +12,7 @@ class NotePanel extends React.Component {
     window.notePad = this;
     this.state = {  }
   }
-  
+
   render() {
     const slackIntegration = this.props.user && this.props.user.slack_integration ?
       this.props.user.slack_integration :
@@ -90,7 +90,7 @@ class NotePanel extends React.Component {
             variant="contained"
             fullWidth
             onClick={ () => {
-              window.location = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
+              window.location = SLACK_APP_TOKEN_ENDPOINT;
             }}
           >
             Add to Slack

@@ -24,3 +24,5 @@ export const ASSEMBO_ASSIGN_DOWN_VARIATIONS = [
   "assign",
   "a sign"
 ];
+
+export const SLACK_APP_TOKEN_ENDPOINT = "https://slack.com/oauth/v2/authorize?client_id=1849110550144.3455765220631&scope=channels:read,chat:write,incoming-webhook,users:read,users:read.email&user_scope="
