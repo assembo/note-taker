@@ -9,27 +9,14 @@ import './NotePanel.css';
 class NotePanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { slackIntegrated: false };
     window.notePad = this;
+    this.state = {  }
   }
-
-  async componentDidMount() {
-    const userID = this.props.user && this.props.user._id ?
-      this.props.user._id.$oid :
-      null
-    const code = window.location.search.slice(1).split("&")[0].split("=")[1];
-    if (code && userID) {
-      await axios.get("slack_user_token", { params: { code, userID } });
-    }
-    const slackIntegration = this.props.user && this.props.user.slackIntegration ?
-      this.props.user.slackIntegration :
-      null;
-    if (slackIntegration) {
-      // TODO: we have to deal with this in another way
-      this.setState({ slackIntegrated: true})
-    }
-  }
+  
   render() {
+    const slackIntegration = this.props.user && this.props.user.slack_integration ?
+      this.props.user.slack_integration :
+      null;
     return (
       <div className="containershadow">
         <TextField
@@ -97,7 +84,7 @@ class NotePanel extends React.Component {
             }}
         >Send to email</Button>
         {
-          this.state.user &&
+          this.props.user &&
           <Button
             className="notePanel__add_to_slack notePanel__button"
             variant="contained"
@@ -110,7 +97,7 @@ class NotePanel extends React.Component {
           </Button>
         }
         {
-          this.state.slackIntegrated && 
+          slackIntegration && 
           <Button
             className="notePanel__add_to_slack notePanel__button"
             variant="contained"
@@ -120,14 +107,15 @@ class NotePanel extends React.Component {
               {
                 params: {
                   notes: this.props.note,
-                  slackBotToken: this.props.user.slackIntegration["bot_access_token"]
+                  slackBotToken: slackIntegration.bot_access_token,
+                  channel_id: slackIntegration.channel_id
                 }
-                });
-                Swal.fire({
-                  title:`Assembo's notes sent to Slack`,
-                  confirmButtonColor: ASSEMBO_COLORS.primary}
-                );
-              }}
+              });
+              Swal.fire({
+                title:`Assembo's notes sent to Slack`,
+                confirmButtonColor: ASSEMBO_COLORS.primary}
+              );
+            }}
             >
             Send to Slack
           </Button>
