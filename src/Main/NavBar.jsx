@@ -17,7 +17,6 @@ async function handleCredentialResponse(response){
   try {
     const result = await axios.get('/login', { params: { 'Authorization': response.credential }});
     const user = result.data;
-
     const userID = user._id.$oid;
     if (userID) {
       localStorage.setItem("ASSEMBO_USER_ID", userID);
@@ -28,10 +27,11 @@ async function handleCredentialResponse(response){
   } catch (error) {
     console.error("User could not log in", error);
   }
-
 }
+
 function oneTapSignIn(setUser){
-    google.accounts?.id.initialize({
+  if (google.accounts && google.accounts.id) {
+    google.accounts.id.initialize({
       client_id: REACT_APP_CLIENT_ID,
       auto_select: true,
       callback: async (response) => { 
@@ -41,11 +41,12 @@ function oneTapSignIn(setUser){
         }
       }
     });
-    google.accounts?.id.renderButton(
+    google.accounts.id.renderButton(
       document.getElementById("buttonDiv"),
       { theme: "outline", size: "large" }  // customization attributes
     );
-    google.accounts?.id.prompt(); // also display the One Tap dialog
+    google.accounts.id.prompt(); // also display the One Tap dialog
+  }
 };
 
 window.oneTapSignIn = oneTapSignIn;
